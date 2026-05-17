@@ -475,7 +475,7 @@ tr:nth-child(even) td{background:rgba(100,70,40,0.04)}
 <!-- TOP BAR -->
 <header class="topbar">
   <div class="logo">AK <span>三平台演算法</span> 實戰手冊</div>
-  <span class="v-badge">v1.1 + Tool Map</span>
+  <span class="v-badge">v1.1</span>
   <div class="topbar-right">
     <button class="print-btn" onclick="window.print()">🖨 列印 / PDF</button>
   </div>
@@ -511,11 +511,6 @@ tr:nth-child(even) td{background:rgba(100,70,40,0.04)}
   </button>
   <button class="nav-btn" onclick="nav('myths')" id="nb-myths">
     <span class="nav-icon">💡</span>常見迷思破解
-  </button>
-
-  <span class="sb-label">工具整合</span>
-  <button class="nav-btn" onclick="nav('tools')" id="nb-tools">
-    <span class="nav-icon">🧩</span>Screenwriter / v6.5 對接
   </button>
 
   <span class="sb-label">關於</span>
@@ -1301,108 +1296,6 @@ tr:nth-child(even) td{background:rgba(100,70,40,0.04)}
         <div class="myth-right">✅ Facebook Feed 使用機器學習個人化排序，只推送系統認為有價值的內容</div>
         <div class="myth-why">⚠ 停留在「萬粉等於萬曝光」的舊時代思維</div>
         <div class="myth-src">source: fb_feed_ranking_content · meta_ranking_overview</div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ══════════════════════════════════════
-     PAGE: TOOLS
-══════════════════════════════════════ -->
-<div class="page" id="page-tools">
-  <div class="page-title">🧩 Screenwriter / v6.5 對接規格</div>
-  <div class="page-sub">工具化規則：Screenwriter 負責策略與審計；v6.5 僅負責生成執行、metadata 顯示與 History Tracking</div>
-
-  <div class="callout callout-info mb8">
-    <b>核心分工裁決</b><br>
-    Screenwriter = Brief / Algorithm Guard / 雙審 / Storyboard / ShotPackage。<br>
-    v6.5 = Builder / Image & Video 生成 / Workflow A-B / Library / History。<br>
-    v6.5 不重跑 Radar、不重跑雙審、不重新判斷演算法，只接收 Screenwriter 輸出的 metadata。
-  </div>
-
-  <div class="card open">
-    <div class="card-head" onclick="toggleCard(this)">
-      <h3>Algorithm Tags｜演算法標籤中英對照</h3>
-      <span class="card-toggle">▼</span>
-    </div>
-    <div class="card-body">
-      <div class="tbl-wrap">
-        <table>
-          <tr><th>Tag</th><th>中文註解</th><th>用途</th><th>Claim Level</th><th>Layer</th></tr>
-          <tr><td>Intent-Matching</td><td>搜尋意圖對齊</td><td>標題、描述、caption 是否使用觀眾真實會搜尋的詞</td><td><span class="badge-official">official</span></td><td>Pre-check</td></tr>
-          <tr><td>CTR-Promise</td><td>點擊承諾兌現</td><td>標題/縮圖承諾是否能在前 30 秒開始兌現</td><td><span class="badge-inf">practical_inference</span></td><td>Pre-check</td></tr>
-          <tr><td>Retention-Bridge</td><td>留存橋樑</td><td>中段是否每 5–10 秒有新資訊點或節奏變化</td><td><span class="badge-official">official</span></td><td>Pre-check / Post-check</td></tr>
-          <tr><td>Satisfaction-Proof</td><td>滿意度證明</td><td>結尾是否真正解決觀眾問題，而非只吊胃口</td><td><span class="badge-official">official</span></td><td>Pre-check / Post-check</td></tr>
-          <tr><td>Watch-Time-Hook</td><td>觀看時間鉤子</td><td>前 1–3 秒是否直接呼叫受眾、避免無意義片頭</td><td><span class="badge-inf">practical_inference</span></td><td>Pre-check</td></tr>
-          <tr><td>Originality-Check</td><td>原創性檢查</td><td>是否有創作者自身觀點、案例、聲音，不是低努力搬運</td><td><span class="badge-official">official</span></td><td>Pre-check</td></tr>
-          <tr><td>Engagement-Bait-Guard</td><td>互動誘餌防呆</td><td>排除留言+1、按讚解鎖、分享給三個朋友等機械指令</td><td><span class="badge-official">official / high_confidence</span></td><td>Pre-check</td></tr>
-          <tr><td>DM-Bridge</td><td>私訊承接橋</td><td>導向私訊/LINE/社群等變現承接，不可寫成官方推播權重</td><td><span class="badge-inf">practical_inference</span></td><td>Strategy-only</td></tr>
-        </table>
-      </div>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="card-head" onclick="toggleCard(this)">
-      <h3>Claim Wording Guard｜措辭防呆規則</h3>
-      <span class="card-toggle">▼</span>
-    </div>
-    <div class="card-body">
-      <div class="do-dont">
-        <div class="do-block">
-          <div class="do-title">✅ 可用措辭</div>
-          <div class="do-item">official：官方文件指出 / 官方核心訊號</div>
-          <div class="do-item">high_confidence：高可信說法 / 平台高層建議觀察指標</div>
-          <div class="do-item">practical_inference：實務承接策略 / 變現漏斗觀察指標</div>
-          <div class="do-item">unsupported：無官方支撐 / 常見迷思 / 不建議引用</div>
-        </div>
-        <div class="dont-block">
-          <div class="dont-title">❌ 禁用措辭</div>
-          <div class="dont-item">保證推播 / 保證加權 / 每天發片保證加權</div>
-          <div class="dont-item">DM 是官方推播權重</div>
-          <div class="dont-item">Profile Visit 是 ranking factor</div>
-          <div class="dont-item">社團分享有固定加權公式</div>
-        </div>
-      </div>
-      <div class="callout callout-warn mt8">
-        <b>裁決：</b>DM、Messenger、Groups、Live 是變現承接或信任深化工具，不是官方 ranking factor。Screenwriter 可以提示承接策略，但輸出時必須標示為 practical_inference / Strategy-only。
-      </div>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="card-head" onclick="toggleCard(this)">
-      <h3>Pre-check / Post-check / Strategy-only 分層</h3>
-      <span class="card-toggle">▼</span>
-    </div>
-    <div class="card-body">
-      <div class="tbl-wrap">
-        <table>
-          <tr><th>Layer</th><th>中文</th><th>工具行為</th><th>例子</th></tr>
-          <tr><td>Pre-check</td><td>發布前檢查</td><td>Screenwriter 可在產出腳本前後檢查，必要時警示</td><td>Hook、搜尋意圖、原創性、互動誘餌、前30秒承諾</td></tr>
-          <tr><td>Post-check</td><td>發布後追蹤</td><td>v6.5 History 可保留欄位，但不判斷成敗</td><td>CTR、Retention、Avg % Viewed、Shares、Comments、Sends</td></tr>
-          <tr><td>Strategy-only</td><td>策略承接</td><td>只能作為變現漏斗建議，不可寫成官方推播訊號</td><td>DM、LINE、Messenger、Groups、Live、私域社群</td></tr>
-        </table>
-      </div>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="card-head" onclick="toggleCard(this)">
-      <h3>JSON / History Tracking 欄位規格</h3>
-      <span class="card-toggle">▼</span>
-    </div>
-    <div class="card-body">
-      <div class="callout callout-gold">
-        Screenwriter 輸出 AK Algorithm JSON 時，應保留 <b>source_claim_level</b>、<b>algorithm_tags</b>、<b>audit.warnings</b>、<b>history_tracking</b>。v6.5 只顯示與封存，不重判。
-      </div>
-      <div class="tbl-wrap mt8">
-        <table>
-          <tr><th>欄位</th><th>中文</th><th>用途</th></tr>
-          <tr><td>script_design.*</td><td>腳本設計依據</td><td>發布前設計：受眾、Hook、承諾、原創性、平台版位</td></tr>
-          <tr><td>audit.*</td><td>審計結果</td><td>Claim Level、Warning、Engagement Bait、Unsupported Claim</td></tr>
-          <tr><td>history_tracking.*</td><td>發布後追蹤</td><td>URL、發布日期、CTR、留存、分享、留言、轉換與下一版修正</td></tr>
-        </table>
       </div>
     </div>
   </div>
