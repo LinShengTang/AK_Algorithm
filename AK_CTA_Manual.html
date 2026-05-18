@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AK CTA Manual v1.0</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f5f0e8;--bg2:#ede7d9;--bg3:#e3dccf;--sidebar:#251c14;--topbar:#1e1510;--border:rgba(100,70,40,.18);--border2:rgba(100,70,40,.35);--text:#1a1008;--text2:#3d2b18;--text3:#7a5c3a;--text-inv:#f5f0e8;--accent:#b7412e;--accent-h:#e55c47;--blue:#1a5fa8;--green:#27714a;--gold:#b8860b;--purple:#6b3fa0;--shadow:0 2px 12px rgba(80,50,20,.12);--radius:10px;--radius2:6px}
+*{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}body{background:var(--bg);color:var(--text);font-family:'Noto Sans TC',sans-serif;min-height:100vh;font-size:14px;line-height:1.65}body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='360' height='360'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='360' height='360' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");pointer-events:none;z-index:0}.shell{display:grid;grid-template-columns:230px 1fr;grid-template-rows:54px 1fr;min-height:100vh;position:relative;z-index:1}.topbar{grid-column:1/-1;display:flex;align-items:center;padding:0 20px;background:var(--topbar);border-bottom:2px solid var(--accent);gap:12px;position:sticky;top:0;z-index:200;box-shadow:0 2px 8px rgba(0,0,0,.3)}.logo{font-family:'Syne',sans-serif;font-weight:800;font-size:15px;color:#ffe8b0;letter-spacing:-.3px;white-space:nowrap}.logo span{color:#c8a060;font-weight:400}.v-badge{font-family:'JetBrains Mono',monospace;font-size:10px;background:var(--accent);color:#fff;padding:2px 8px;border-radius:20px;font-weight:700}.topbar-right{margin-left:auto;display:flex;gap:8px;align-items:center}.print-btn{padding:5px 14px;border:1px solid rgba(255,255,255,.25);border-radius:20px;background:transparent;color:#c8a878;font-size:12px;cursor:pointer;font-family:'Syne',sans-serif;font-weight:600;transition:all .18s}.print-btn:hover{background:rgba(255,255,255,.1);color:#fff}.sidebar{background:var(--sidebar);border-right:2px solid rgba(183,65,46,.35);padding:20px 0;overflow-y:auto;position:sticky;top:54px;height:calc(100vh - 54px)}.sb-label{font-family:'JetBrains Mono',monospace;font-size:9px;color:#c8a878;letter-spacing:2px;text-transform:uppercase;padding:0 16px;margin:16px 0 6px;display:block}.sb-label:first-child{margin-top:0}.nav-btn{display:flex;align-items:center;gap:8px;width:100%;padding:9px 16px;background:none;border:1px solid transparent;border-radius:0;color:#e8d0a8;font-family:'Noto Sans TC',sans-serif;font-size:13px;cursor:pointer;text-align:left;transition:all .15s}.nav-btn:hover{background:rgba(245,240,232,.1);color:#fff5e0}.nav-btn.active{background:rgba(183,65,46,.2);border-left:3px solid var(--accent);color:#ffb090;padding-left:13px}.nav-icon{font-size:14px;width:18px;text-align:center;flex-shrink:0}.main{padding:24px 28px;overflow-y:auto;max-width:100%}.page{display:none}.page.active{display:block}.page-title{font-family:'Syne',sans-serif;font-size:21px;font-weight:800;color:var(--text);margin-bottom:4px;display:flex;align-items:center;gap:10px}.page-sub{font-size:12px;color:var(--text3);margin-bottom:20px;font-family:'JetBrains Mono',monospace}.badge{display:inline-flex;align-items:center;gap:3px;font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;padding:1px 7px;border-radius:10px;white-space:nowrap}.badge-official{background:rgba(26,95,168,.12);color:var(--blue);border:1px solid rgba(26,95,168,.35)}.badge-high{background:rgba(184,134,11,.12);color:var(--gold);border:1px solid rgba(184,134,11,.35)}.badge-inf{background:rgba(107,63,160,.1);color:var(--purple);border:1px solid rgba(107,63,160,.3)}.badge-exp{background:rgba(39,113,74,.12);color:var(--green);border:1px solid rgba(39,113,74,.35)}.badge-bad{background:rgba(183,65,46,.1);color:var(--accent);border:1px solid rgba(183,65,46,.35)}.card{background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius);margin-bottom:12px;overflow:hidden;box-shadow:var(--shadow)}.card-head{display:flex;align-items:center;gap:10px;padding:12px 16px;cursor:pointer;user-select:none;transition:background .15s}.card-head:hover{background:var(--bg3)}.card-head h3{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;flex:1}.card-toggle{font-size:12px;color:var(--text3);transition:transform .2s;flex-shrink:0}.card.open .card-toggle{transform:rotate(180deg)}.card-body{display:none;padding:0 16px 16px;border-top:1px solid var(--border)}.card.open .card-body{display:block}.tbl-wrap{overflow-x:auto;margin:12px 0}table{width:100%;border-collapse:collapse;font-size:13px}th{background:var(--sidebar);color:#ffe8b0;font-family:'Syne',sans-serif;font-weight:700;font-size:12px;padding:8px 12px;text-align:left;white-space:nowrap}td{padding:8px 12px;border-bottom:1px solid var(--border);vertical-align:top}tr:last-child td{border-bottom:none}tr:nth-child(even) td{background:rgba(100,70,40,.04)}.callout{padding:10px 14px;border-radius:var(--radius2);font-size:13px;margin:10px 0;border-left:3px solid}.callout-warn{background:rgba(183,65,46,.07);border-color:var(--accent);color:var(--text)}.callout-info{background:rgba(26,95,168,.07);border-color:var(--blue);color:var(--text)}.callout-ok{background:rgba(39,113,74,.07);border-color:var(--green);color:var(--text)}.callout-gold{background:rgba(184,134,11,.08);border-color:var(--gold);color:var(--text)}.callout b{font-weight:700}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px;margin:12px 0}.mini{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius2);padding:12px 14px}.mini h4{font-family:'Syne',sans-serif;font-size:13px;margin-bottom:6px}.mini p{font-size:12px;color:var(--text2)}.do-dont{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0}.do-block,.dont-block{padding:10px 12px;border-radius:var(--radius2);font-size:13px}.do-block{background:rgba(39,113,74,.08);border:1px solid rgba(39,113,74,.3)}.dont-block{background:rgba(183,65,46,.07);border:1px solid rgba(183,65,46,.3)}.do-title{color:var(--green);font-weight:700;font-size:11px;margin-bottom:6px;font-family:'Syne',sans-serif}.dont-title{color:var(--accent);font-weight:700;font-size:11px;margin-bottom:6px;font-family:'Syne',sans-serif}.do-item,.dont-item{margin-bottom:5px;padding-left:14px;position:relative;font-size:12px;line-height:1.5}.do-item::before{content:'✓';position:absolute;left:0;color:var(--green);font-weight:700}.dont-item::before{content:'✗';position:absolute;left:0;color:var(--accent);font-weight:700}.code{font-family:'JetBrains Mono',monospace;background:rgba(40,28,18,.08);border:1px solid var(--border);border-radius:var(--radius2);padding:9px 10px;font-size:12px;white-space:pre-wrap;color:var(--text2);margin:8px 0}.form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0}label{font-size:12px;color:var(--text3);display:block;margin-bottom:4px}select,input,textarea{width:100%;border:1px solid var(--border2);border-radius:var(--radius2);background:var(--bg);color:var(--text);padding:8px 10px;font-family:'Noto Sans TC',sans-serif;font-size:13px}textarea{min-height:110px;resize:vertical}.btn{border:1px solid var(--border2);background:var(--sidebar);color:#ffe8b0;border-radius:20px;padding:7px 16px;cursor:pointer;font-weight:700;font-size:12px;margin-right:6px;transition:.15s}.btn:hover{background:var(--accent);color:#fff}.result{border:1px solid var(--border);background:var(--bg);border-radius:var(--radius2);padding:12px;margin-top:10px}.result.pass{border-color:rgba(39,113,74,.45);background:rgba(39,113,74,.07)}.result.fail{border-color:rgba(183,65,46,.5);background:rgba(183,65,46,.07)}.result.warn{border-color:rgba(184,134,11,.5);background:rgba(184,134,11,.08)}.pill{display:inline-flex;border-radius:20px;padding:2px 9px;font-size:11px;font-weight:700;margin:2px 4px 2px 0}.pill-red{background:rgba(183,65,46,.14);color:var(--accent)}.pill-gold{background:rgba(184,134,11,.15);color:var(--gold)}.pill-green{background:rgba(39,113,74,.14);color:var(--green)}.sep{height:1px;background:var(--border);margin:16px 0}.mt8{margin-top:8px}.mb8{margin-bottom:8px}.small{font-size:12px;color:var(--text3)}ul{margin-left:18px}li{margin:3px 0}@media(max-width:800px){.shell{display:block}.topbar{position:relative}.sidebar{position:relative;top:auto;height:auto}.main{padding:18px}.do-dont{grid-template-columns:1fr}.form-row{grid-template-columns:1fr}}@media print{.sidebar,.topbar,.print-btn,.btn{display:none!important}.shell{display:block}.main{padding:0}.page{display:block!important}.card-body{display:block!important}.card-toggle{display:none}.card{box-shadow:none;border:1px solid #ccc;break-inside:avoid}.page-title{page-break-before:always}.page-title:first-child{page-break-before:auto}body::before{display:none}}
+</style>
+</head>
+<body>
+<div class="shell">
+<header class="topbar">
+  <div class="logo">AK <span>CTA</span> Manual</div>
+  <span class="v-badge">v1.0</span>
+  <div class="topbar-right"><button class="print-btn" onclick="window.print()">🖨 列印 / PDF</button></div>
+</header>
+<nav class="sidebar">
+  <span class="sb-label">工具模式</span>
+  <button class="nav-btn active" onclick="nav('audit')" id="nb-audit"><span class="nav-icon">✅</span>CTA 安全審計</button>
+  <button class="nav-btn" onclick="nav('quick')" id="nb-quick"><span class="nav-icon">⚡</span>速查裁決</button>
+  <span class="sb-label">核心章節</span>
+  <button class="nav-btn" onclick="nav('safe')" id="nb-safe"><span class="nav-icon">🛡</span>安全 CTA 四類</button>
+  <button class="nav-btn" onclick="nav('hook')" id="nb-hook"><span class="nav-icon">🧲</span>Hook → CTA</button>
+  <button class="nav-btn" onclick="nav('platform')" id="nb-platform"><span class="nav-icon">📱</span>三平台版位</button>
+  <button class="nav-btn" onclick="nav('chain')" id="nb-chain"><span class="nav-icon">🔗</span>CTA → DM → Offer</button>
+  <button class="nav-btn" onclick="nav('products')" id="nb-products"><span class="nav-icon">💰</span>產品類型</button>
+  <span class="sb-label">追蹤與教學</span>
+  <button class="nav-btn" onclick="nav('post')" id="nb-post"><span class="nav-icon">📊</span>Post-check / A/B</button>
+  <button class="nav-btn" onclick="nav('teaching')" id="nb-teaching"><span class="nav-icon">🎓</span>教學驗收</button>
+  <button class="nav-btn" onclick="nav('toolmap')" id="nb-toolmap"><span class="nav-icon">🧩</span>工具對接</button>
+  <span class="sb-label">關於</span>
+  <button class="nav-btn" onclick="nav('about')" id="nb-about"><span class="nav-icon">📋</span>來源與版本</button>
+</nav>
+<main class="main">
+
+<section class="page active" id="page-audit">
+  <div class="page-title">✅ CTA 安全審計工具</div>
+  <div class="page-sub">把 CTA 貼進來，快速檢查 Tier 1 Fatal / Tier 2 Contextual Risk / CTA 類型建議</div>
+  <div class="card open"><div class="card-head" onclick="toggleCard(this)"><h3>輸入 CTA 文字</h3><span class="card-toggle">▼</span></div><div class="card-body">
+    <textarea id="ctaText" placeholder="例如：想要模板，留言 +1；或：你現在卡在哪一步？留言告訴我。"></textarea>
+    <div class="form-row">
+      <div><label>平台 / 版位</label><select id="platform"><option value="ig_reels">Instagram Reels</option><option value="ig_stories">Instagram Stories</option><option value="fb_reels">Facebook Reels</option><option value="fb_feed">Facebook Feed</option><option value="youtube_shorts">YouTube Shorts</option><option value="youtube_long">YouTube 長影片</option></select></div>
+      <div><label>預期行動</label><select id="expected"><option value="dm">DM / 私訊</option><option value="comment">留言</option><option value="save">收藏</option><option value="watch_next">延伸觀看</option><option value="click">點擊</option></select></div>
+    </div>
+    <button class="btn" onclick="checkCTA()">檢查 CTA 安全性</button><button class="btn" onclick="fillExample('safe')">填入安全範例</button><button class="btn" onclick="fillExample('bad')">填入危險範例</button>
+    <div id="auditResult" class="result" style="display:none"></div>
+  </div></div>
+  <div class="card open"><div class="card-head" onclick="toggleCard(this)"><h3>30 秒快速審計法</h3><span class="card-toggle">▼</span></div><div class="card-body">
+    <div class="grid"><div class="mini"><h4>1. 有沒有踩紅線？</h4><p>是否出現 +1、留言數字、打我、按讚解鎖、標記三個朋友等條件指令？</p></div><div class="mini"><h4>2. 需要帶入情境嗎？</h4><p>觀眾是機械反射，還是需要回答自己的真實狀況？</p></div><div class="mini"><h4>3. 聽起來像勒索嗎？</h4><p>如果刪掉前面內容，只聽 CTA，是否像「不互動就不給」？</p></div></div>
+  </div></div>
+</section>
+
+<section class="page" id="page-quick">
+  <div class="page-title">⚡ 速查裁決</div><div class="page-sub">CTA 的定位、五級證據、v7 衝突修正與最高 ROI 裁決</div>
+  <div class="callout callout-ok"><b>核心裁決：</b>CTA = 轉化承接設計（Conversion Handoff），不是演算法推播訊號。CTA 不負責創造流量；CTA 負責承接意圖。</div>
+  <div class="card open"><div class="card-head" onclick="toggleCard(this)"><h3>如果只能設計一種 CTA</h3><span class="card-toggle">▼</span></div><div class="card-body"><p><b>C 類｜私訊承接型 DM Trigger</b> 長期投報率最高，但僅在內容已對準痛點、CTA 不使用機械互動、DM 第一段是診斷型提問、後端有 LFA / Micro Offer / 檢查表 / 模板時成立。</p><div class="code">安全句型：如果你也卡在這裡，私訊我你的狀況，我可以幫你看一下。</div></div></div>
+  <div class="card"><div class="card-head" onclick="toggleCard(this)"><h3>source_claim_level / framework_origin</h3><span class="card-toggle">▼</span></div><div class="card-body"><div class="tbl-wrap"><table><tr><th>欄位</th><th>等級</th><th>CTA 章用途</th></tr><tr><td>source_claim_level</td><td><span class="badge badge-official">official</span> <span class="badge badge-high">high_confidence</span> <span class="badge badge-inf">practical_inference</span> <span class="badge badge-exp">first_party_experiment</span> <span class="badge badge-bad">unsupported</span></td><td>標示說法的證據等級；FB/YT Engagement Bait 屬 official，IG 屬 high_confidence。</td></tr><tr><td>framework_origin</td><td>external_research / adapted_framework / first_party_framework / none</td><td>標示框架來源；例如 AK No Help 是 adapted_framework，不是 Ziglar 原版。</td></tr></table></div></div></div>
+  <div class="card"><div class="card-head" onclick="toggleCard(this)"><h3>v7 CTA 衝突修正</h3><span class="card-toggle">▼</span></div><div class="card-body"><div class="do-dont"><div class="dont-block"><div class="dont-title">❌ 原版衝突</div><div class="dont-item">Low Friction 範例：留言 +1</div><div class="dont-item">把機械式互動誤當低阻力</div></div><div class="do-block"><div class="do-title">✅ 升級定義</div><div class="do-item">Low Friction ≠ Low Quality Engagement</div><div class="do-item">低阻力 = 心理阻力低 + 行動成本低 + 非機械互動</div></div></div></div></div>
+</section>
+
+<section class="page" id="page-safe">
+  <div class="page-title">🛡 安全 CTA 四大類</div><div class="page-sub">不是所有 CTA 都要導向留言；依內容任務選擇最安全且最有效的承接方式</div>
+  <div class="grid"><div class="mini"><h4>A 類｜真實問題型</h4><p>用途：留言品質、FB Discussion-Starter、受眾診斷。</p><div class="code">你現在卡在哪一步？\n你比較常卡在選題、腳本，還是發布？</div></div><div class="mini"><h4>B 類｜收藏型</h4><p>用途：教學內容、檢查表、步驟型內容。</p><div class="code">這份清單適合收藏，等你要拍片前再看。</div></div><div class="mini"><h4>C 類｜私訊承接型</h4><p>用途：高意圖轉化、DM 診斷、LFA 承接。</p><div class="code">如果你也卡在這裡，私訊我你的狀況，我可以幫你看一下。</div></div><div class="mini"><h4>D 類｜延伸觀看型</h4><p>用途：長內容導流、系列內容、留存延伸。</p><div class="code">下一支我會補第二步，想接著看的人可以先追蹤。</div></div></div>
+  <div class="card open"><div class="card-head" onclick="toggleCard(this)"><h3>禁用語與語境風險</h3><span class="card-toggle">▼</span></div><div class="card-body"><div class="tbl-wrap"><table><tr><th>級別</th><th>語句</th><th>處理</th></tr><tr><td>Tier 1 Fatal</td><td>留言 +1、留言 1 / 111、打「我」、按讚解鎖、按讚支持、按讚才更新、訂閱才繼續、分享給三個朋友、標記三個朋友</td><td>Hard fail，必須改寫。</td></tr><tr><td>Tier 2 Contextual Risk</td><td>留言領取、留言解鎖、留言換取、留言我發、留言拿模板</td><td>Warning，人工判斷是否為情境式承接。</td></tr><tr><td>Tier 3 Weak CTA</td><td>你覺得呢？留言分享你的想法。有需要可以找我。</td><td>不一定危險，但常因空泛而低轉化。</td></tr></table></div></div></div>
+</section>
+
+<section class="page" id="page-hook">
+  <div class="page-title">🧲 Hook → CTA 對應</div><div class="page-sub">Hook 開什麼缺口，CTA 就補什麼缺口</div>
+  <div class="card open"><div class="card-head" onclick="toggleCard(this)"><h3>對應表</h3><span class="card-toggle">▼</span></div><div class="card-body"><div class="tbl-wrap"><table><tr><th>Hook 類型</th><th>主要心理機制</th><th>建議 CTA</th><th>說明</th></tr><tr><td>痛點型 Pain</td><td>No Need / No Help</td><td>C 私訊承接型</td><td>觀眾痛點被喚起，最適合導入診斷與解法。</td></tr><tr><td>好奇型 Curiosity</td><td>Information Gap</td><td>B 收藏型 / D 延伸觀看型</td><td>保留缺口，導向完整流程或收藏。</td></tr><tr><td>共鳴型 Relate</td><td>No Trust</td><td>A 真實問題型</td><td>先建立同理，再讓觀眾說出自己的狀況。</td></tr><tr><td>爭議型 Controversy</td><td>Attention / Conflict</td><td>A 真實問題型</td><td>引導真實觀點，而不是機械表態。</td></tr><tr><td>結果型 Result</td><td>Curiosity / Proof</td><td>B 收藏型 / C 私訊型</td><td>給出完整流程或診斷入口。</td></tr></table></div><div class="callout callout-warn"><b>失配風險：</b>Hook 與 CTA 不一致，容易造成 audience_mismatch、trust_gap、offer_gap。</div></div></div>
+</section>
+
+<section class="page" id="page-platform">
+  <div class="page-title">📱 三平台 CTA 策略</div><div class="page-sub">底層語句遵守三平台最大安全公約數；版位與承接方式依平台客製化</div>
+  <div class="card open"><div class="card-head" onclick="toggleCard(this)"><h3>Platform → CTA placement</h3><span class="card-toggle">▼</span></div><div class="card-body"><div class="tbl-wrap"><table><tr><th>平台 / 版位</th><th>建議 CTA 類型</th><th>建議位置</th><th>注意事項</th></tr><tr><td>YouTube 長影片</td><td>A 問題型 / D 延伸觀看型</td><td>中段 + 結尾 + 置頂留言 / end screen</td><td>不要只押結尾，避免觀眾流失後才 CTA。</td></tr><tr><td>YouTube Shorts</td><td>B 收藏型 / C 私訊型</td><td>畫面結尾 + description / pinned comment</td><td>不支援長片 end screen。</td></tr><tr><td>Instagram Reels</td><td>C 私訊型 / B 收藏型</td><td>畫面結尾 + Caption</td><td>Caption 可承接搜尋與私訊語境。</td></tr><tr><td>Instagram Stories</td><td>問題貼紙 / Link / 回覆</td><td>中段 + 最後一張</td><td>使用官方互動元件，避免機械關鍵字誘導。</td></tr><tr><td>Facebook Reels</td><td>A 真實問題型</td><td>畫面結尾 + Caption</td><td>以 Discussion-Starter 為主。</td></tr><tr><td>Facebook Feed</td><td>A 真實問題型</td><td>貼文最後一段</td><td>避免 Engagement Bait，鼓勵真實討論。</td></tr></table></div></div></div>
+</section>
+
+<section class="page" id="page-chain">
+  <div class="page-title">🔗 CTA → DM → Offer 鏈路</div><div class="page-sub">CTA 的任務不是成交，而是讓對的人走到下一個可診斷節點</div>
+  <div class="card open"><div class="card-head" onclick="toggleCard(this)"><h3>五節點鏈路</h3><span class="card-toggle">▼</span></div><div class="card-body"><div class="code">影片 CTA → DM 開場 → DM 診斷 → 方案提出 → 自然成交</div><div class="tbl-wrap"><table><tr><th>節點</th><th>任務</th><th>常見斷點</th></tr><tr><td>CTA</td><td>低阻力引導下一步</td><td>踩 Engagement Bait / CTA 與 Hook 斷裂</td></tr><tr><td>DM 開場</td><td>降低戒心，建立人感</td><td>直接丟連結、太像機器人</td></tr><tr><td>DM 診斷</td><td>確認對方真正問題</td><td>沒聽懂需求、過早推銷</td></tr><tr><td>方案提出</td><td>對應問題給解法</td><td>Offer 不吸引、價值不明</td></tr><tr><td>自然成交</td><td>消除最後阻礙</td><td>No Trust / No Money / No Hurry 未處理</td></tr></table></div><div class="callout callout-ok"><b>DM 第一則建議：</b>沒問題，我可以給你。不過我想先確認一下，你現在主要是卡在選題、腳本，還是發布？</div></div></div>
+</section>
+
+<section class="page" id="page-products">
+  <div class="page-title">💰 不同產品類型 CTA</div><div class="page-sub">CTA 不只看平台，也要看產品客單價與決策阻力</div>
+  <div class="card open"><div class="card-head" onclick="toggleCard(this)"><h3>產品類型對應表</h3><span class="card-toggle">▼</span></div><div class="card-body"><div class="tbl-wrap"><table><tr><th>產品類型</th><th>建議 CTA</th><th>主要阻礙</th><th>說明</th></tr><tr><td>低客單產品</td><td>直接低阻力私訊 / 連結承接</td><td>No Hurry</td><td>決策短，重點是降低操作成本。</td></tr><tr><td>中客單產品</td><td>LFA / 檢查表 / 微課程</td><td>No Trust / No Help</td><td>先交付小價值，再追蹤轉化。</td></tr><tr><td>高客單產品</td><td>一對一診斷 / 狀況回覆</td><td>No Trust</td><td>不直接賣，先診斷與建立信任。</td></tr><tr><td>免費引流品</td><td>痛點導向 + 具體解法</td><td>No Need / No Help</td><td>不說資源多完整，而說能解什麼痛。</td></tr><tr><td>服務型產品</td><td>診斷與人味</td><td>No Trust</td><td>強調理解與客製化。</td></tr><tr><td>數位產品</td><td>SOP、模板、效率</td><td>No Help</td><td>強調系統性與可立即使用。</td></tr></table></div></div></div>
+  <div class="card"><div class="card-head" onclick="toggleCard(this)"><h3>ManyChat / 自動化 / 人工回覆</h3><span class="card-toggle">▼</span></div><div class="card-body"><div class="callout callout-info"><b>裁決：</b>ManyChat 不是問題；問題是機械式 CTA 與機器人式承接。</div><div class="do-dont"><div class="do-block"><div class="do-title">✅ 適合自動化</div><div class="do-item">確認關鍵字</div><div class="do-item">發第一句診斷型提問</div><div class="do-item">提供初步分流選項</div><div class="do-item">發送低風險資源</div></div><div class="dont-block"><div class="dont-title">⚠ 必須人工處理</div><div class="dont-item">高客單需求</div><div class="dont-item">非標準問題</div><div class="dont-item">反對意見處理</div><div class="dont-item">成交前信任建立</div></div></div></div></div>
+</section>
+
+<section class="page" id="page-post">
+  <div class="page-title">📊 Post-check / A/B Test</div><div class="page-sub">從「安全」進到「有效」，發布後用數據診斷 CTA 失效原因</div>
+  <div class="card open"><div class="card-head" onclick="toggleCard(this)"><h3>CTA 失效診斷</h3><span class="card-toggle">▼</span></div><div class="card-body"><div class="tbl-wrap"><table><tr><th>diagnosis</th><th>意義</th><th>修正方向</th></tr><tr><td>cta_design</td><td>CTA 本身不清楚、不安全或摩擦過高</td><td>改寫 CTA 類型或語句</td></tr><tr><td>content_value</td><td>內容本身沒讓觀眾覺得值得行動</td><td>回頭修 Script / Value</td></tr><tr><td>audience_mismatch</td><td>Hook 吸來的人與 Offer 不一致</td><td>重寫 Hook 與受眾定位</td></tr><tr><td>trust_gap</td><td>信任不足，承諾要求太高</td><td>降低 CTA 層級，增加 Stories / 過程展示</td></tr><tr><td>offer_gap</td><td>引流品不吸引</td><td>重新設計 LFA / Micro Offer</td></tr><tr><td>timing</td><td>CTA 出現太早或太晚</td><td>調整位置與節奏</td></tr></table></div></div></div>
+  <div class="card"><div class="card-head" onclick="toggleCard(this)"><h3>A/B Test SOP</h3><span class="card-toggle">▼</span></div><div class="card-body"><div class="callout callout-warn"><b>禁止：</b>不使用危險 CTA 作為新實驗組，例如留言 +1、留言 111、按讚解鎖、打「我」。舊內容可作 archive comparison，但不建議新上線測試。</div><div class="tbl-wrap"><table><tr><th>組別</th><th>類型</th><th>CTA</th></tr><tr><td>A</td><td>真實問題型</td><td>你現在卡在哪一步？留言告訴我。</td></tr><tr><td>B</td><td>私訊承接型</td><td>想要完整清單，可以私訊我「清單」。</td></tr><tr><td>C</td><td>收藏型</td><td>這份清單適合收藏，等你拍片前再看。</td></tr></table></div><p class="small">控制變量：同主題、同 Hook、同 Script、同平台、相近發布時段、同類型受眾，只改 CTA。沒有足夠樣本前，不得把單次波動寫成結論。</p></div></div>
+</section>
+
+<section class="page" id="page-teaching">
+  <div class="page-title">🎓 教學驗收</div><div class="page-sub">讓團員真正理解：高互動不等於高轉化</div>
+  <div class="card open"><div class="card-head" onclick="toggleCard(this)"><h3>學員必懂一句話</h3><span class="card-toggle">▼</span></div><div class="card-body"><div class="callout callout-gold"><b>CTA 不能無中生有，只能順水推舟。</b></div><p>CTA 是結帳櫃檯，不是百貨公司大聲公。它不能把不想買的人變成買家，只能讓已經心動的人更容易走下一步。</p></div></div>
+  <div class="card"><div class="card-head" onclick="toggleCard(this)"><h3>5 分鐘測驗</h3><span class="card-toggle">▼</span></div><div class="card-body"><div class="do-dont"><div class="dont-block"><div class="dont-title">影片 A</div><div class="dont-item">10 萬觀看</div><div class="dont-item">2000 個「留言+1」</div><div class="dont-item">0 私訊 / 0 成交</div></div><div class="do-block"><div class="do-title">影片 B</div><div class="do-item">3000 觀看</div><div class="do-item">50 個私訊</div><div class="do-item">10 單成交</div></div></div><p><b>問題：</b>如果目標是下個月多賺 5 萬，你要哪一支影片的數據？</p></div></div>
+  <div class="card"><div class="card-head" onclick="toggleCard(this)"><h3>驗收標準</h3><span class="card-toggle">▼</span></div><div class="card-body"><div class="tbl-wrap"><table><tr><th>程度</th><th>標準</th></tr><tr><td>基礎</td><td>能刪除 Tier 1 Fatal CTA，並改寫成安全 CTA。</td></tr><tr><td>應用</td><td>能依 Hook 類型選對 CTA 類型。</td></tr><tr><td>進階</td><td>能根據 post-check 數據判斷失效原因並提出下一次修正。</td></tr></table></div><div class="code">畢業作品：痛點型 Hook → Script → 安全 CTA → DM 診斷開場 → CTA post-check 設計</div></div></div>
+</section>
+
+<section class="page" id="page-toolmap">
+  <div class="page-title">🧩 Screenwriter / v6.5 對接</div><div class="page-sub">Screenwriter 執行 CTA 審計；v6.5 僅接收與顯示 metadata</div>
+  <div class="card open"><div class="card-head" onclick="toggleCard(this)"><h3>Screenwriter 應寫入位置</h3><span class="card-toggle">▼</span></div><div class="card-body"><ul><li>Quick Plan CTA 產出</li><li>Import Plan Prompt</li><li>Radar Plan CTA 建議</li><li>Script CTA 欄位</li><li>Review / Algorithm Claim Audit</li><li>AK Algorithm JSON 匯出</li><li>Plan Workspace metadata</li></ul><div class="code">HARD_BANNED_CTA_PATTERNS = ["留言+1", "留言 +1", "打+1", "留言1", "留言111", "按讚解鎖", "按讚支持", "按讚才", "訂閱才", "分享給三個", "標記三個", "打「我」", "打我"]\n\nCONTEXTUAL_RISK_CTA_PATTERNS = ["留言領取", "留言解鎖", "留言換取", "留言我發", "留言拿"]</div></div></div>
+  <div class="card"><div class="card-head" onclick="toggleCard(this)"><h3>AK JSON 欄位</h3><span class="card-toggle">▼</span></div><div class="card-body"><div class="code">{
+  "audit": {
+    "cta_check": {
+      "passed": true,
+      "engagement_bait_detected": false,
+      "hard_banned_patterns_found": [],
+      "contextual_risk_patterns_found": [],
+      "cta_type": "question | dm_trigger | save | extend",
+      "platform_fit_checked": true,
+      "source_claim_level": "practical_inference",
+      "framework_origin": "none"
+    },
+    "cta_platform_fit": {
+      "platform": "youtube_long | youtube_shorts | ig_reels | ig_stories | fb_reels | fb_feed",
+      "placement": "opening | middle | end | caption | sticker | pinned_comment | end_screen",
+      "risk_level": "low | medium | high"
+    },
+    "cta_post_check": {
+      "expected_action": "comment | dm | save | click | watch_next",
+      "failure_diagnosis": "cta_design | content_value | audience_mismatch | trust_gap | offer_gap | timing",
+      "source_claim_level": "first_party_experiment"
+    }
+  }
+}</div></div></div>
+  <div class="card"><div class="card-head" onclick="toggleCard(this)"><h3>v6.5 邊界</h3><span class="card-toggle">▼</span></div><div class="card-body"><div class="do-dont"><div class="do-block"><div class="do-title">✅ v6.5 做</div><div class="do-item">接收 cta_check</div><div class="do-item">顯示 cta_platform_fit</div><div class="do-item">保存 cta_post_check</div><div class="do-item">寫入 History metadata</div></div><div class="dont-block"><div class="dont-title">❌ v6.5 不做</div><div class="dont-item">不重跑 CTA Safety Audit</div><div class="dont-item">不重寫 CTA</div><div class="dont-item">不重判演算法</div><div class="dont-item">不產生 Weekly Plan</div></div></div></div></div>
+</section>
+
+<section class="page" id="page-about">
+  <div class="page-title">📋 來源與版本</div><div class="page-sub">AK CTA Manual v1.0｜由 CTA Master Spec v1.0 轉製</div>
+  <div class="card open"><div class="card-head" onclick="toggleCard(this)"><h3>基礎來源</h3><span class="card-toggle">▼</span></div><div class="card-body"><ul><li>AK 教材 v7 Complete ULTRA MAX｜Chapter 3 CTA</li><li>AK_CTA_Safety_Patch_v1.1</li><li>AK CTA LM 23 Questions 深度輸出</li><li>AK Course Evidence Protocol v1.0</li></ul></div></div>
+  <div class="card"><div class="card-head" onclick="toggleCard(this)"><h3>需降級與待補查項目</h3><span class="card-toggle">▼</span></div><div class="card-body"><div class="tbl-wrap"><table><tr><th>說法</th><th>等級</th><th>處理</th></tr><tr><td>Safety Patch 會讓虛榮互動減少 20–40%</td><td>unsupported / first_party_experiment 待驗證</td><td>不得當成事實。</td></tr><tr><td>平台必定用 NLP / 信息熵判斷留言品質</td><td>practical_inference</td><td>可寫成可能推論，不可寫成官方機制。</td></tr><tr><td>YouTube 長影片中段 CTA 必定高於結尾</td><td>practical_inference</td><td>可寫成建議，不可寫成平台規則。</td></tr><tr><td>ManyChat 風險細節</td><td>practical_inference</td><td>需後續補官方文件或實測。</td></tr><tr><td>DM 私訊數等於高價值 ranking signal</td><td>unsupported</td><td>不可使用。</td></tr></table></div></div></div>
+  <div class="card"><div class="card-head" onclick="toggleCard(this)"><h3>版本紀錄</h3><span class="card-toggle">▼</span></div><div class="card-body"><div class="code">v1.0｜2026-05-18\n- 由 AK_CTA_Master_Spec_v1.0 轉製為 HTML 手冊\n- 加入互動式 CTA 安全審計工具\n- 保留 Screenwriter / v6.5 Tool Mapping\n- 保留 source_claim_level 與 framework_origin 邊界</div></div></div>
+</section>
+
+</main></div>
+<script>
+function nav(id){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));document.getElementById('page-'+id).classList.add('active');document.getElementById('nb-'+id).classList.add('active');window.scrollTo(0,0)}
+function toggleCard(el){el.parentElement.classList.toggle('open')}
+const HARD_BANNED = ["留言+1","留言 +1","打+1","留言1","留言 1","留言111","留言 111","按讚解鎖","按讚支持","按讚才","訂閱才","分享給三個","標記三個","打「我」","打我","留準","打準"];
+const CONTEXTUAL = ["留言領取","留言解鎖","留言換取","留言我發","留言拿","留言索取","留言模板","留言想要"];
+function detectType(txt){ if(/私訊|DM|跟我說|我給你|幫你看/.test(txt)) return 'dm_trigger'; if(/收藏|存起來|保存/.test(txt)) return 'save'; if(/下一支|續集|完整版|去看|追蹤/.test(txt)) return 'extend'; if(/留言|你現在|你比較|你遇過|哪一步|哪一段|怎麼處理/.test(txt)) return 'question'; return 'unknown'; }
+function platformPlacement(p,type){ const map={youtube_long:'中段 + 結尾 + 置頂留言 / end screen',youtube_shorts:'畫面結尾 + description / pinned comment',ig_reels:'畫面結尾 + Caption',ig_stories:'中段 + 最後一張 / 問題貼紙 / Link',fb_reels:'畫面結尾 + Caption',fb_feed:'貼文最後一段'}; return map[p]||'依內容調整'; }
+function checkCTA(){ const txt=document.getElementById('ctaText').value.trim(); const p=document.getElementById('platform').value; const expected=document.getElementById('expected').value; const hard=HARD_BANNED.filter(x=>txt.includes(x)); const contextual=CONTEXTUAL.filter(x=>txt.includes(x)); const type=detectType(txt); const box=document.getElementById('auditResult'); box.style.display='block'; box.className='result'; let status='PASS'; if(!txt){box.className='result warn';box.innerHTML='<b>請先輸入 CTA。</b>';return} if(hard.length){status='FAIL';box.classList.add('fail')} else if(contextual.length || type==='unknown'){status='WARNING';box.classList.add('warn')} else {box.classList.add('pass')} const typeLabel={question:'真實問題型',dm_trigger:'私訊承接型',save:'收藏型',extend:'延伸觀看型',unknown:'未明確分類'}[type]; let advice=''; if(status==='FAIL') advice='必須改寫。建議改成具體問題型或私訊承接型，例如：「你現在卡在哪一步？留言告訴我。」或「如果你也卡在這裡，私訊我你的狀況，我可以幫你看一下。」'; else if(status==='WARNING') advice='需要人工判斷語境。若是「機械式換取資源」，請改寫成「基於情境的回覆承接」。'; else advice='通過基本安全檢查。請再確認 Hook 與 CTA 是否一致、是否有可交付的 LFA / 資源。'; box.innerHTML=`<h3>CTA Safety v1.1：${status}</h3><p><b>CTA 類型：</b>${typeLabel}</p><p><b>建議版位：</b>${platformPlacement(p,type)}</p><p><b>預期行動：</b>${expected}</p>${hard.length?`<p><b>Hard banned：</b>${hard.map(x=>`<span class="pill pill-red">${x}</span>`).join('')}</p>`:''}${contextual.length?`<p><b>Contextual risk：</b>${contextual.map(x=>`<span class="pill pill-gold">${x}</span>`).join('')}</p>`:''}<p><b>建議：</b>${advice}</p><div class="code">audit.cta_check = { passed: ${status==='PASS'}, engagement_bait_detected: ${status==='FAIL'}, cta_type: "${type}", source_claim_level: "practical_inference" }</div>`; }
+function fillExample(kind){document.getElementById('ctaText').value = kind==='safe' ? '如果你也卡在這裡，私訊我你的狀況，我可以幫你看一下。' : '想要模板，留言 +1，我發給你。'; checkCTA();}
+</script>
+</body>
+</html>
