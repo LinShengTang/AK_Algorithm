@@ -564,6 +564,7 @@ tr:nth-child(even) td{background:rgba(100,70,40,0.04)}
 .sep{height:1px;background:var(--border);margin:16px 0}
 </style>
 <!-- AK_Platform_Safety_Patch_v1.0 -->
+<!-- AK_Platform_Safety_Display_Fix_v1.1 -->
 </head>
 <body>
 <div class="shell">
@@ -1758,30 +1759,18 @@ tr:nth-child(even) td{background:rgba(100,70,40,0.04)}
     </div>
   </div>
 </div>
-
-
-      <section class="page" id="safety">
-        <div class="page-title">🛡 Algorithm Safety Gate</div>
-        <div class="page-sub">Platform Safety Layer｜平台紅線與內容安全守門</div>
-        
-        <div class="card open">
-          <div class="card-head"><h3>Algorithm Safety Gate｜推薦前安全過濾層</h3><span class="card-toggle">⌄</span></div>
-          <div class="card-body">
-            <div class="callout callout-warn"><b>AK 寫法：</b>演算法不是只看 CTR、Retention、互動。內容若先踩到版權、誤導、虛假互動或社群安全邊界，可能在推薦前就被限制、移除或觸發帳號風險。</div>
-            <div class="tbl-wrap"><table>
-              <thead><tr><th>Gate</th><th>檢查內容</th><th>不得寫成</th></tr></thead>
-              <tbody>
-                <tr><td>版權</td><td>素材 / 音樂 / 影片片段授權</td><td>只要標來源就一定安全</td></tr>
-                <tr><td>真實性</td><td>標題、縮圖、內容是否一致</td><td>標題越誇張越容易被推</td></tr>
-                <tr><td>互動完整性</td><td>是否買粉、刷量、互刷、垃圾評論</td><td>互動越多越好，不管來源</td></tr>
-                <tr><td>安全準則</td><td>仇恨、暴力、危險、低俗、敏感煽動</td><td>擦邊越刺激越容易爆</td></tr>
-              </tbody>
-            </table></div>
-          </div>
-        </div>
-
-      </section>
-
+<section class="page" id="safety">
+<div class="page-title">🛡 Safety Gate｜推薦前安全過濾層</div>
+<div class="page-sub">Platform Safety Layer｜平台紅線與內容安全守門</div>
+<div class="card open safety-card"><div class="card-head"><h3>Algorithm Safety Gate｜推薦前安全過濾層</h3><span class="card-toggle">⌄</span></div><div class="card-body">
+<div class="callout callout-warn"><b>AK 寫法：</b>演算法不是只看 CTR、Retention、互動。內容若先踩到版權、誤導、虛假互動或社群安全邊界，可能在推薦前就被限制、移除或觸發帳號風險。</div>
+<div class="tbl-wrap"><table><thead><tr><th>Gate</th><th>檢查內容</th><th>不得寫成</th></tr></thead><tbody>
+<tr><td>版權</td><td>素材 / 音樂 / 影片片段授權</td><td>只要標來源就一定安全</td></tr>
+<tr><td>真實性</td><td>標題、縮圖、內容是否一致</td><td>標題越誇張越容易被推</td></tr>
+<tr><td>互動完整性</td><td>是否買粉、刷量、互刷、垃圾評論</td><td>互動越多越好，不管來源</td></tr>
+<tr><td>安全準則</td><td>仇恨、暴力、危險、低俗、敏感煽動</td><td>擦邊越刺激越容易爆</td></tr>
+</tbody></table></div></div></div>
+</section>
 </main>
 </div>
 
@@ -2102,5 +2091,24 @@ function resetAudit() {
 // ── INIT ──
 updateScore();
 </script>
+
+<script>
+(function(){
+  function showSafetyPage(){
+    const safety=document.getElementById("safety");
+    if(!safety) return;
+    document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+    safety.classList.add("active");
+    document.querySelectorAll(".nav-btn").forEach(b=>b.classList.remove("active"));
+    const nb=document.getElementById("nb-safety");
+    if(nb) nb.classList.add("active");
+  }
+  const oldNav=window.nav;
+  window.nav=function(id){ if(id==="safety") return showSafetyPage(); if(typeof oldNav==="function") return oldNav(id); };
+  function bind(){ const nb=document.getElementById("nb-safety"); if(nb) nb.addEventListener("click",e=>{e.preventDefault();showSafetyPage();}); if(location.hash==="#safety") showSafetyPage(); }
+  if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",bind); else bind();
+})();
+</script>
+
 </body>
 </html>
