@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AK 三平台演算法實戰手冊 v1.1</title>
+<title>AK 三平台演算法實戰手冊 v1.1｜Platform Safety Patch v1.0</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
@@ -29,6 +29,101 @@
   --radius:  10px;
   --radius2: 6px;
 }
+
+/* ── TOOL MAP BAR ── */
+.toolmap-bar{grid-column:1/-1;background:rgba(20,12,6,0.97);border-bottom:1px solid rgba(192,57,43,0.2);padding:6px 20px;display:flex;gap:4px;align-items:center;flex-wrap:wrap;min-height:34px}
+.tm-label{font-family:"JetBrains Mono",monospace;font-size:9px;color:#c8a878;letter-spacing:2px;text-transform:uppercase;white-space:nowrap;margin-right:6px;flex-shrink:0}
+.tm-arrow{color:rgba(200,160,96,0.35);font-size:11px;flex-shrink:0;padding:0 1px}
+.tm-chip{display:inline-flex;flex-direction:column;padding:3px 10px;border-radius:8px;cursor:pointer;border:1px solid transparent;transition:all 0.15s;white-space:nowrap;line-height:1.3}
+.tm-chip:hover{opacity:0.85}
+.tm-chip-name{font-weight:600;font-size:11px;font-family:"Noto Sans TC",sans-serif}
+.tm-chip-sub{font-size:9px;opacity:0.6;font-family:"JetBrains Mono",monospace}
+.tm-pre{background:rgba(192,57,43,0.2);border-color:rgba(192,57,43,0.4);color:#ffb090}
+.tm-quick{background:rgba(100,70,40,0.22);border-color:rgba(100,70,40,0.38);color:#e8d0a8}
+.tm-diag{background:rgba(26,95,168,0.22);border-color:rgba(26,95,168,0.4);color:#90c4ff}
+.tm-know{background:rgba(39,113,74,0.18);border-color:rgba(39,113,74,0.35);color:#90e4b4}
+.tm-ref{background:rgba(184,134,11,0.18);border-color:rgba(184,134,11,0.35);color:#ffd080}
+
+/* ── DIAGNOSTIC MODULE ── */
+.diag-tabs{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap}
+.diag-tab{padding:8px 20px;border:1px solid var(--border2);border-radius:20px;background:transparent;font-size:13px;color:var(--text2);cursor:pointer;font-family:'Noto Sans TC',sans-serif;transition:all 0.15s}
+.diag-tab.active{background:var(--sidebar);color:#ffe8b0;border-color:var(--sidebar)}
+.diag-tab:hover:not(.active){background:var(--bg3)}
+.diag-platform{display:none}.diag-platform.active{display:block}
+.input-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px}
+.input-grid.single{grid-template-columns:1fr}
+.input-group{display:flex;flex-direction:column;gap:6px}
+.input-label{font-size:12px;font-weight:600;color:var(--text2);display:flex;align-items:center;gap:6px}
+.input-source{font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--text3)}
+.metric-input{
+  width:100%;padding:10px 14px;border:1px solid var(--border2);border-radius:var(--radius2);
+  background:var(--bg);color:var(--text);font-size:14px;font-family:'JetBrains Mono',monospace;
+  outline:none;transition:all 0.15s
+}
+.metric-input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(26,95,168,0.1)}
+.metric-unit{font-size:11px;color:var(--text3);margin-top:3px}
+.diag-btn{
+  width:100%;padding:12px;background:var(--sidebar);color:#ffe8b0;
+  border:none;border-radius:var(--radius);font-size:14px;font-weight:700;
+  cursor:pointer;font-family:'Syne',sans-serif;transition:all 0.15s;margin-bottom:20px
+}
+.diag-btn:hover{background:#3a2a1a}
+.diag-results{display:none}
+.diag-results.show{display:block}
+.metric-card{
+  background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);
+  padding:14px 16px;margin-bottom:12px;position:relative;overflow:hidden
+}
+.metric-card::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;width:4px;border-radius:4px 0 0 4px
+}
+.metric-card.ok::before{background:var(--green)}
+.metric-card.warn::before{background:var(--gold)}
+.metric-card.bad::before{background:var(--accent)}
+.metric-card.info::before{background:var(--blue)}
+.metric-card-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px}
+.metric-name{font-size:13px;font-weight:600}
+.metric-value-display{font-family:'JetBrains Mono',monospace;font-size:16px;font-weight:700}
+.metric-value-display.ok{color:var(--green)}
+.metric-value-display.warn{color:var(--gold)}
+.metric-value-display.bad{color:var(--accent)}
+.metric-verdict{font-size:13px;color:var(--text2);margin-bottom:8px}
+.metric-benchmark{font-size:11px;color:var(--text3);background:var(--bg2);padding:6px 10px;border-radius:var(--radius2);margin-bottom:8px}
+.metric-benchmark a{color:var(--blue);text-decoration:none;font-size:10px}
+.metric-benchmark a:hover{text-decoration:underline}
+.metric-fix{font-size:12px;color:var(--text2);background:rgba(39,113,74,0.07);border:1px solid rgba(39,113,74,0.2);padding:8px 10px;border-radius:var(--radius2)}
+.quadrant-box{
+  background:var(--bg);border:1px solid var(--border2);border-radius:var(--radius);
+  padding:16px;margin-bottom:12px
+}
+.quadrant-title{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.quadrant-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.q-cell{
+  padding:12px;border-radius:var(--radius2);border:1px solid var(--border);
+  font-size:12px;text-align:center;transition:all 0.2s;position:relative
+}
+.q-cell.highlight{
+  border-width:2px;transform:scale(1.03);
+  box-shadow:0 4px 12px rgba(0,0,0,0.12)
+}
+.q-cell.q-best{background:rgba(39,113,74,0.12);border-color:rgba(39,113,74,0.4)}
+.q-cell.q-pack{background:rgba(184,134,11,0.12);border-color:rgba(184,134,11,0.4)}
+.q-cell.q-click{background:rgba(192,57,43,0.1);border-color:rgba(192,57,43,0.35)}
+.q-cell.q-both{background:rgba(107,63,160,0.1);border-color:rgba(107,63,160,0.3)}
+.q-cell-title{font-weight:700;font-size:13px;margin-bottom:4px}
+.q-cell-desc{font-size:11px;color:var(--text3)}
+.next-fix-box{
+  background:var(--sidebar);color:#ffe8b0;border-radius:var(--radius);
+  padding:16px 18px;margin-top:4px
+}
+.next-fix-title{font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:#c8a878;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px}
+.next-fix-items{display:flex;flex-direction:column;gap:8px}
+.next-fix-item{font-size:13px;display:flex;gap:8px;align-items:flex-start}
+.next-fix-num{background:var(--accent);color:#fff;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;margin-top:1px}
+.disclaimer{font-size:11px;color:var(--text3);margin-top:16px;padding:10px 12px;background:var(--bg2);border-radius:var(--radius2);border:1px solid var(--border);line-height:1.6}
+.paid-toggle{display:flex;gap:8px;margin-bottom:16px}
+.paid-btn{padding:6px 14px;border:1px solid var(--border2);border-radius:20px;font-size:12px;cursor:pointer;background:transparent;color:var(--text3);font-family:'Noto Sans TC',sans-serif;transition:all 0.15s}
+.paid-btn.active{background:var(--blue);color:#fff;border-color:var(--blue)}
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{
@@ -53,7 +148,7 @@ body::before{
 .shell{
   display:grid;
   grid-template-columns:220px 1fr;
-  grid-template-rows:54px 1fr;
+  grid-template-rows:54px 34px 1fr;
   min-height:100vh;
   position:relative;
   z-index:1;
@@ -113,8 +208,8 @@ body::before{
   padding:20px 0;
   overflow-y:auto;
   position:sticky;
-  top:54px;
-  height:calc(100vh - 54px);
+  top:88px;
+  height:calc(100vh - 88px);
 }
 .sb-label{
   font-family:'JetBrains Mono',monospace;
@@ -468,6 +563,7 @@ tr:nth-child(even) td{background:rgba(100,70,40,0.04)}
 .row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .sep{height:1px;background:var(--border);margin:16px 0}
 </style>
+<!-- AK_Platform_Safety_Patch_v1.0 -->
 </head>
 <body>
 <div class="shell">
@@ -480,6 +576,55 @@ tr:nth-child(even) td{background:rgba(100,70,40,0.04)}
     <button class="print-btn" onclick="window.print()">🖨 列印 / PDF</button>
   </div>
 </header>
+
+<!-- TOOL MAP BAR -->
+<div class="toolmap-bar">
+  <span class="tm-label">Tool Map</span>
+
+  <div class="tm-chip tm-pre" onclick="nav('audit')">
+    <span class="tm-chip-name">✅ 發布前審計</span>
+    <span class="tm-chip-sub">Tier 1/2/3 清單</span>
+  </div>
+  <span class="tm-arrow">→</span>
+
+  <div class="tm-chip tm-quick" onclick="nav('quick')">
+    <span class="tm-chip-name">⚡ 速查表</span>
+    <span class="tm-chip-sub">三平台對比</span>
+  </div>
+  <span class="tm-arrow">→</span>
+
+  <div class="tm-chip tm-diag" onclick="nav('diag')">
+    <span class="tm-chip-name">🔬 數據診斷</span>
+    <span class="tm-chip-sub">CTR × Retention</span>
+  </div>
+  <span class="tm-arrow">→</span>
+
+  <div class="tm-chip tm-know" onclick="nav('yt')">
+    <span class="tm-chip-name">▶ YouTube</span>
+    <span class="tm-chip-sub">深度知識庫</span>
+  </div>
+
+  <div class="tm-chip tm-know" onclick="nav('ig')">
+    <span class="tm-chip-name">📸 Instagram</span>
+    <span class="tm-chip-sub">深度知識庫</span>
+  </div>
+
+  <div class="tm-chip tm-know" onclick="nav('fb')">
+    <span class="tm-chip-name">💙 Facebook</span>
+    <span class="tm-chip-sub">深度知識庫</span>
+  </div>
+  <span class="tm-arrow">→</span>
+
+  <div class="tm-chip tm-ref" onclick="nav('bench')">
+    <span class="tm-chip-name">📊 Benchmark</span>
+    <span class="tm-chip-sub">數字基準線</span>
+  </div>
+
+  <div class="tm-chip tm-ref" onclick="nav('myths')">
+    <span class="tm-chip-name">💡 迷思破解</span>
+    <span class="tm-chip-sub">常見錯誤</span>
+  </div>
+</div>
 
 <!-- SIDEBAR -->
 <nav class="sidebar">
@@ -506,6 +651,9 @@ tr:nth-child(even) td{background:rgba(100,70,40,0.04)}
   </button>
 
   <span class="sb-label">數字與迷思</span>
+  <button class="nav-btn" onclick="nav('diag')" id="nb-diag">
+    <span class="nav-icon">🔬</span>數據診斷
+  </button>
   <button class="nav-btn" onclick="nav('bench')" id="nb-bench">
     <span class="nav-icon">📊</span>數字基準線
   </button>
@@ -513,10 +661,17 @@ tr:nth-child(even) td{background:rgba(100,70,40,0.04)}
     <span class="nav-icon">💡</span>常見迷思破解
   </button>
 
+  <span class="sb-label">工具整合</span>
+  <button class="nav-btn" onclick="nav('tools')" id="nb-tools">
+    <span class="nav-icon">🧩</span>Screenwriter / v6.5 對接
+  </button>
+
   <span class="sb-label">關於</span>
   <button class="nav-btn" onclick="nav('about')" id="nb-about">
     <span class="nav-icon">📋</span>版本紀錄
   </button>
+
+  <button class="nav-btn" onclick="nav('safety')" id="nb-safety"><span class="nav-icon">🛡</span>🛡 Safety Gate</button>
 </nav>
 
 <!-- MAIN -->
@@ -1119,6 +1274,132 @@ tr:nth-child(even) td{background:rgba(100,70,40,0.04)}
 </div>
 
 <!-- ══════════════════════════════════════
+     PAGE: DIAGNOSTIC
+══════════════════════════════════════ -->
+<div class="page" id="page-diag">
+  <div class="page-title">🔬 數據診斷</div>
+  <div class="page-sub">輸入你的後台數據，系統依據官方文件與研究基準給出診斷</div>
+
+  <div class="callout callout-gold" style="margin-bottom:20px">
+    <b>使用方式：</b>選擇平台，輸入你的後台數據，按「開始診斷」。每個數字旁邊都標注了依據來源。
+  </div>
+
+  <div class="diag-tabs">
+    <button class="diag-tab active" onclick="switchPlatform('yt',this)">▶ YouTube</button>
+    <button class="diag-tab" onclick="switchPlatform('ig',this)">📸 Instagram</button>
+    <button class="diag-tab" onclick="switchPlatform('fb',this)">💙 Facebook</button>
+  </div>
+
+  <!-- YOUTUBE -->
+  <div class="diag-platform active" id="diag-yt">
+    <div class="input-grid">
+      <div class="input-group">
+        <label class="input-label">CTR 點擊率（%）<span class="badge-official">official</span></label>
+        <input class="metric-input" id="yt-ctr" type="number" min="0" max="100" step="0.1" placeholder="例如：3.5">
+        <div class="metric-unit">來源：YouTube Help <a href="https://support.google.com/youtube/answer/7628154" target="_blank" style="color:var(--blue)">answer/7628154</a>｜半數頻道落在 2–10%</div>
+      </div>
+      <div class="input-group">
+        <label class="input-label">平均留存率（%）<span class="badge-inf">research</span></label>
+        <input class="metric-input" id="yt-ret" type="number" min="0" max="100" step="0.1" placeholder="例如：28">
+        <div class="metric-unit">來源：Retention Rabbit 2025（10,000+影片）｜全平台平均 23.7%</div>
+      </div>
+      <div class="input-group">
+        <label class="input-label">DM 私訊數量（7天）</label>
+        <input class="metric-input" id="yt-dm" type="number" min="0" step="1" placeholder="例如：5">
+        <div class="metric-unit">選填｜用於診斷 CTA 效果</div>
+      </div>
+      <div class="input-group">
+        <label class="input-label">內容類型</label>
+        <select class="metric-input" id="yt-type">
+          <option value="general">一般內容</option>
+          <option value="education">教育類</option>
+          <option value="vlog">Vlog 類</option>
+          <option value="shorts">Shorts</option>
+        </select>
+      </div>
+    </div>
+    <button class="diag-btn" onclick="diagnoseYT()">開始診斷 ▶</button>
+    <div class="diag-results" id="yt-results"></div>
+  </div>
+
+  <!-- INSTAGRAM -->
+  <div class="diag-platform" id="diag-ig">
+    <div class="callout callout-info" style="margin-bottom:14px">
+      <b>請使用 2026 年新指標：</b>Reach→Viewers、Impressions→Views、Engagement→Interactions。若後台仍顯示舊名稱，對應填入即可。
+    </div>
+    <div class="input-grid">
+      <div class="input-group">
+        <label class="input-label">Viewers 不重複觀眾數<span class="badge-high">high_confidence</span></label>
+        <input class="metric-input" id="ig-viewers" type="number" min="0" step="1" placeholder="例如：1200">
+        <div class="metric-unit">2026新指標（舊名：Reach）｜同一帳號只計一次</div>
+      </div>
+      <div class="input-group">
+        <label class="input-label">Views 總觀看次數<span class="badge-high">high_confidence</span></label>
+        <input class="metric-input" id="ig-views" type="number" min="0" step="1" placeholder="例如：1800">
+        <div class="metric-unit">2026新指標（舊名：Impressions）｜含重複觀看，通常 > Viewers</div>
+      </div>
+      <div class="input-group">
+        <label class="input-label">Interactions 主動互動數<span class="badge-high">high_confidence</span></label>
+        <input class="metric-input" id="ig-int" type="number" min="0" step="1" placeholder="例如：85">
+        <div class="metric-unit">2026新指標（舊名：Engagement）｜按讚+留言+分享+收藏</div>
+      </div>
+      <div class="input-group">
+        <label class="input-label">Sends 私訊分享數<span class="badge-high">high_confidence</span></label>
+        <input class="metric-input" id="ig-sends" type="number" min="0" step="1" placeholder="例如：12">
+        <div class="metric-unit">Mosseri：最高品質的互動訊號</div>
+      </div>
+    </div>
+    <button class="diag-btn" onclick="diagnoseIG()">開始診斷 ▶</button>
+    <div class="diag-results" id="ig-results"></div>
+  </div>
+
+  <!-- FACEBOOK -->
+  <div class="diag-platform" id="diag-fb">
+    <div class="callout callout-warn" style="margin-bottom:12px">
+      <b>注意：</b>Meta Business Suite 的 Insights 概覽只顯示 Organic。若有下廣告請先到 Ads Manager 取得純 Organic 數字，或在下方勾選。
+    </div>
+    <div style="margin-bottom:14px">
+      <div class="input-label" style="margin-bottom:8px">數據來源類型</div>
+      <div class="paid-toggle">
+        <button class="paid-btn active" onclick="setFBMode('organic',this)">純自然流量（Organic）</button>
+        <button class="paid-btn" onclick="setFBMode('mixed',this)">含付費流量</button>
+      </div>
+    </div>
+    <div class="callout callout-info" id="fb-mixed-warn" style="display:none;margin-bottom:12px">
+      含付費數據時診斷準確度下降，建議取得純 Organic 數字後再診斷。
+    </div>
+    <div class="input-grid">
+      <div class="input-group">
+        <label class="input-label">Viewers 不重複觀眾數<span class="badge-high">high_confidence</span></label>
+        <input class="metric-input" id="fb-viewers" type="number" min="0" step="1" placeholder="例如：800">
+        <div class="metric-unit">2026新指標（舊名：Reach）</div>
+      </div>
+      <div class="input-group">
+        <label class="input-label">Interactions 主動互動數<span class="badge-high">high_confidence</span></label>
+        <input class="metric-input" id="fb-int" type="number" min="0" step="1" placeholder="例如：45">
+        <div class="metric-unit">2026新指標（舊名：Engagement）</div>
+      </div>
+      <div class="input-group">
+        <label class="input-label">留言數（Comments）<span class="badge-official">official</span></label>
+        <input class="metric-input" id="fb-comments" type="number" min="0" step="1" placeholder="例如：18">
+        <div class="metric-unit">用於估算 MSI 品質</div>
+      </div>
+      <div class="input-group">
+        <label class="input-label">來回討論數（估算）<span class="badge-official">official</span></label>
+        <input class="metric-input" id="fb-replies" type="number" min="0" step="1" placeholder="例如：8">
+        <div class="metric-unit">back_and_forth_replies｜MSI 核心訊號</div>
+      </div>
+    </div>
+    <button class="diag-btn" onclick="diagnoseFB()">開始診斷 ▶</button>
+    <div class="diag-results" id="fb-results"></div>
+  </div>
+
+  <div class="disclaimer" style="margin-top:24px">
+    <b>數據依據說明：</b>CTR 基準來自 YouTube Help answer/7628154（official）；留存率基準來自 Retention Rabbit 2025（10,000+影片，practical_inference）；Meta 指標定義來自 meta_2026_reporting_changes（high_confidence）。所有 Benchmark 以英語市場為主，台灣繁中市場請以自身帳號歷史數據校準。診斷結果為參考方向，不構成保證。
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
      PAGE: BENCHMARK
 ══════════════════════════════════════ -->
 <div class="page" id="page-bench">
@@ -1302,6 +1583,108 @@ tr:nth-child(even) td{background:rgba(100,70,40,0.04)}
 </div>
 
 <!-- ══════════════════════════════════════
+     PAGE: TOOLS
+══════════════════════════════════════ -->
+<div class="page" id="page-tools">
+  <div class="page-title">🧩 Screenwriter / v6.5 對接規格</div>
+  <div class="page-sub">工具化規則：Screenwriter 負責策略與審計；v6.5 僅負責生成執行、metadata 顯示與 History Tracking</div>
+
+  <div class="callout callout-info mb8">
+    <b>核心分工裁決</b><br>
+    Screenwriter = Brief / Algorithm Guard / 雙審 / Storyboard / ShotPackage。<br>
+    v6.5 = Builder / Image & Video 生成 / Workflow A-B / Library / History。<br>
+    v6.5 不重跑 Radar、不重跑雙審、不重新判斷演算法，只接收 Screenwriter 輸出的 metadata。
+  </div>
+
+  <div class="card open">
+    <div class="card-head" onclick="toggleCard(this)">
+      <h3>Algorithm Tags｜演算法標籤中英對照</h3>
+      <span class="card-toggle">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>Tag</th><th>中文註解</th><th>用途</th><th>Claim Level</th><th>Layer</th></tr>
+          <tr><td>Intent-Matching</td><td>搜尋意圖對齊</td><td>標題、描述、caption 是否使用觀眾真實會搜尋的詞</td><td><span class="badge-official">official</span></td><td>Pre-check</td></tr>
+          <tr><td>CTR-Promise</td><td>點擊承諾兌現</td><td>標題/縮圖承諾是否能在前 30 秒開始兌現</td><td><span class="badge-inf">practical_inference</span></td><td>Pre-check</td></tr>
+          <tr><td>Retention-Bridge</td><td>留存橋樑</td><td>中段是否每 5–10 秒有新資訊點或節奏變化</td><td><span class="badge-official">official</span></td><td>Pre-check / Post-check</td></tr>
+          <tr><td>Satisfaction-Proof</td><td>滿意度證明</td><td>結尾是否真正解決觀眾問題，而非只吊胃口</td><td><span class="badge-official">official</span></td><td>Pre-check / Post-check</td></tr>
+          <tr><td>Watch-Time-Hook</td><td>觀看時間鉤子</td><td>前 1–3 秒是否直接呼叫受眾、避免無意義片頭</td><td><span class="badge-inf">practical_inference</span></td><td>Pre-check</td></tr>
+          <tr><td>Originality-Check</td><td>原創性檢查</td><td>是否有創作者自身觀點、案例、聲音，不是低努力搬運</td><td><span class="badge-official">official</span></td><td>Pre-check</td></tr>
+          <tr><td>Engagement-Bait-Guard</td><td>互動誘餌防呆</td><td>排除留言+1、按讚解鎖、分享給三個朋友等機械指令</td><td><span class="badge-official">official / high_confidence</span></td><td>Pre-check</td></tr>
+          <tr><td>DM-Bridge</td><td>私訊承接橋</td><td>導向私訊/LINE/社群等變現承接，不可寫成官方推播權重</td><td><span class="badge-inf">practical_inference</span></td><td>Strategy-only</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head" onclick="toggleCard(this)">
+      <h3>Claim Wording Guard｜措辭防呆規則</h3>
+      <span class="card-toggle">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="do-dont">
+        <div class="do-block">
+          <div class="do-title">✅ 可用措辭</div>
+          <div class="do-item">official：官方文件指出 / 官方核心訊號</div>
+          <div class="do-item">high_confidence：高可信說法 / 平台高層建議觀察指標</div>
+          <div class="do-item">practical_inference：實務承接策略 / 變現漏斗觀察指標</div>
+          <div class="do-item">unsupported：無官方支撐 / 常見迷思 / 不建議引用</div>
+        </div>
+        <div class="dont-block">
+          <div class="dont-title">❌ 禁用措辭</div>
+          <div class="dont-item">保證推播 / 保證加權 / 每天發片保證加權</div>
+          <div class="dont-item">DM 是官方推播權重</div>
+          <div class="dont-item">Profile Visit 是 ranking factor</div>
+          <div class="dont-item">社團分享有固定加權公式</div>
+        </div>
+      </div>
+      <div class="callout callout-warn mt8">
+        <b>裁決：</b>DM、Messenger、Groups、Live 是變現承接或信任深化工具，不是官方 ranking factor。Screenwriter 可以提示承接策略，但輸出時必須標示為 practical_inference / Strategy-only。
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head" onclick="toggleCard(this)">
+      <h3>Pre-check / Post-check / Strategy-only 分層</h3>
+      <span class="card-toggle">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>Layer</th><th>中文</th><th>工具行為</th><th>例子</th></tr>
+          <tr><td>Pre-check</td><td>發布前檢查</td><td>Screenwriter 可在產出腳本前後檢查，必要時警示</td><td>Hook、搜尋意圖、原創性、互動誘餌、前30秒承諾</td></tr>
+          <tr><td>Post-check</td><td>發布後追蹤</td><td>v6.5 History 可保留欄位，但不判斷成敗</td><td>CTR、Retention、Avg % Viewed、Shares、Comments、Sends</td></tr>
+          <tr><td>Strategy-only</td><td>策略承接</td><td>只能作為變現漏斗建議，不可寫成官方推播訊號</td><td>DM、LINE、Messenger、Groups、Live、私域社群</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head" onclick="toggleCard(this)">
+      <h3>JSON / History Tracking 欄位規格</h3>
+      <span class="card-toggle">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="callout callout-gold">
+        Screenwriter 輸出 AK Algorithm JSON 時，應保留 <b>source_claim_level</b>、<b>algorithm_tags</b>、<b>audit.warnings</b>、<b>history_tracking</b>。v6.5 只顯示與封存，不重判。
+      </div>
+      <div class="tbl-wrap mt8">
+        <table>
+          <tr><th>欄位</th><th>中文</th><th>用途</th></tr>
+          <tr><td>script_design.*</td><td>腳本設計依據</td><td>發布前設計：受眾、Hook、承諾、原創性、平台版位</td></tr>
+          <tr><td>audit.*</td><td>審計結果</td><td>Claim Level、Warning、Engagement Bait、Unsupported Claim</td></tr>
+          <tr><td>history_tracking.*</td><td>發布後追蹤</td><td>URL、發布日期、CTR、留存、分享、留言、轉換與下一版修正</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
      PAGE: ABOUT
 ══════════════════════════════════════ -->
 <div class="page" id="page-about">
@@ -1376,16 +1759,320 @@ tr:nth-child(even) td{background:rgba(100,70,40,0.04)}
   </div>
 </div>
 
+
+      <section class="page" id="safety">
+        <div class="page-title">🛡 Algorithm Safety Gate</div>
+        <div class="page-sub">Platform Safety Layer｜平台紅線與內容安全守門</div>
+        
+        <div class="card open">
+          <div class="card-head"><h3>Algorithm Safety Gate｜推薦前安全過濾層</h3><span class="card-toggle">⌄</span></div>
+          <div class="card-body">
+            <div class="callout callout-warn"><b>AK 寫法：</b>演算法不是只看 CTR、Retention、互動。內容若先踩到版權、誤導、虛假互動或社群安全邊界，可能在推薦前就被限制、移除或觸發帳號風險。</div>
+            <div class="tbl-wrap"><table>
+              <thead><tr><th>Gate</th><th>檢查內容</th><th>不得寫成</th></tr></thead>
+              <tbody>
+                <tr><td>版權</td><td>素材 / 音樂 / 影片片段授權</td><td>只要標來源就一定安全</td></tr>
+                <tr><td>真實性</td><td>標題、縮圖、內容是否一致</td><td>標題越誇張越容易被推</td></tr>
+                <tr><td>互動完整性</td><td>是否買粉、刷量、互刷、垃圾評論</td><td>互動越多越好，不管來源</td></tr>
+                <tr><td>安全準則</td><td>仇恨、暴力、危險、低俗、敏感煽動</td><td>擦邊越刺激越容易爆</td></tr>
+              </tbody>
+            </table></div>
+          </div>
+        </div>
+
+      </section>
+
 </main>
 </div>
 
 <script>
+// ── DIAGNOSTIC MODULE ──
+
+function switchPlatform(p, btn) {
+  document.querySelectorAll('.diag-platform').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.diag-tab').forEach(el => el.classList.remove('active'));
+  document.getElementById('diag-' + p).classList.add('active');
+  btn.classList.add('active');
+}
+
+let fbMode = 'organic';
+function setFBMode(mode, btn) {
+  fbMode = mode;
+  document.querySelectorAll('.paid-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('fb-mixed-warn').style.display = mode === 'mixed' ? 'block' : 'none';
+}
+
+function metricCard(name, value, unit, level, verdict, benchmark, fix) {
+  const cls = level === 'ok' ? 'ok' : level === 'warn' ? 'warn' : level === 'bad' ? 'bad' : 'info';
+  const valCls = cls;
+  return `
+    <div class="metric-card ${cls}">
+      <div class="metric-card-head">
+        <span class="metric-name">${name}</span>
+        <span class="metric-value-display ${valCls}">${value}${unit}</span>
+      </div>
+      <div class="metric-verdict">${verdict}</div>
+      <div class="metric-benchmark">${benchmark}</div>
+      ${fix ? `<div class="metric-fix">💡 ${fix}</div>` : ''}
+    </div>`;
+}
+
+function quadrantBox(ctr, ret) {
+  const hiCTR = ctr >= 4;
+  const hiRet = ret >= 30;
+  const cells = [
+    { cls: 'q-best', title: '最佳狀態', desc: 'CTR 高 × 留存高', active: hiCTR && hiRet },
+    { cls: 'q-click', title: '⚠️ Clickbait 風險', desc: 'CTR 高 × 留存低', active: hiCTR && !hiRet },
+    { cls: 'q-pack', title: '包裝需優化', desc: 'CTR 低 × 留存高', active: !hiCTR && hiRet },
+    { cls: 'q-both', title: '雙重問題', desc: 'CTR 低 × 留存低', active: !hiCTR && !hiRet },
+  ];
+  return `
+    <div class="quadrant-box">
+      <div class="quadrant-title">📊 CTR × 留存率 四象限診斷 <span class="badge-official">official</span></div>
+      <div class="quadrant-grid">
+        ${cells.map(c => `
+          <div class="q-cell ${c.cls}${c.active ? ' highlight' : ''}">
+            <div class="q-cell-title">${c.active ? '▶ ' : ''}${c.title}</div>
+            <div class="q-cell-desc">${c.desc}</div>
+          </div>`).join('')}
+      </div>
+      <div style="font-size:11px;color:var(--text3);margin-top:10px">
+        依據：YouTube Help answer/7628154（official）—— CTR 與留存必須一起判讀，高 CTR + 低留存是 Clickbait 的演算法訊號。
+      </div>
+    </div>`;
+}
+
+function nextFixBox(fixes) {
+  return `
+    <div class="next-fix-box">
+      <div class="next-fix-title">📌 建議下一步</div>
+      <div class="next-fix-items">
+        ${fixes.map((f, i) => `<div class="next-fix-item"><div class="next-fix-num">${i+1}</div><div>${f}</div></div>`).join('')}
+      </div>
+    </div>`;
+}
+
+function diagnoseYT() {
+  const ctr = parseFloat(document.getElementById('yt-ctr').value);
+  const ret = parseFloat(document.getElementById('yt-ret').value);
+  const dm = parseInt(document.getElementById('yt-dm').value) || null;
+  const type = document.getElementById('yt-type').value;
+  const out = document.getElementById('yt-results');
+
+  if (isNaN(ctr) && isNaN(ret)) {
+    out.innerHTML = '<div class="callout callout-warn">請至少輸入 CTR 或留存率其中一個數字。</div>';
+    out.classList.add('show'); return;
+  }
+
+  const retBench = { general: 23.7, education: 42.1, vlog: 21.5, shorts: 75 };
+  const retAvg = retBench[type] || 23.7;
+  const typeName = { general:'一般內容', education:'教育類', vlog:'Vlog 類', shorts:'Shorts' }[type];
+
+  let html = '';
+  const fixes = [];
+
+  // CTR diagnosis
+  if (!isNaN(ctr)) {
+    let ctrLevel, ctrVerdict, ctrFix;
+    if (ctr < 2) {
+      ctrLevel = 'bad';
+      ctrVerdict = '低於業界下緣（2%），縮圖或標題需要立即優化';
+      ctrFix = '重新設計縮圖，確保主體清晰、高對比、有明確情緒或動作。標題前5個字帶入核心關鍵詞。';
+      fixes.push('優先重新設計縮圖——主體清晰、高對比、有情緒或動作');
+    } else if (ctr < 4) {
+      ctrLevel = 'warn';
+      ctrVerdict = '在業界正常範圍（2–4%），但低於目標基準（4–6%）';
+      ctrFix = '嘗試 A/B 測試不同縮圖版本，每次只換一個變數（文字 vs 人臉 vs 色彩）。';
+      fixes.push('A/B 測試縮圖：只改一個變數，觀察 CTR 7天後的變化');
+    } else if (ctr < 6) {
+      ctrLevel = 'ok';
+      ctrVerdict = '達到業界目標基準（4–6%），維持現有包裝策略';
+      ctrFix = null;
+    } else if (ctr < 9) {
+      ctrLevel = 'ok';
+      ctrVerdict = '良好，高於目標基準——確認留存率同樣良好，避免 Clickbait 訊號';
+    } else {
+      ctrLevel = 'ok';
+      ctrVerdict = '優秀（前段水準）——重點確認留存率是否同樣高，否則有 Clickbait 風險';
+    }
+    html += metricCard('CTR 點擊率', ctr.toFixed(1), '%', ctrLevel, ctrVerdict,
+      '業界基準：2–10%（YouTube 官方）｜目標：4–6%（Lenos Tube 研究）｜<a href="https://support.google.com/youtube/answer/7628154" target="_blank">查閱官方文件</a>',
+      ctrFix);
+  }
+
+  // Retention diagnosis
+  if (!isNaN(ret)) {
+    let retLevel, retVerdict, retFix;
+    if (ret < 20) {
+      retLevel = 'bad';
+      retVerdict = `嚴重低於平均（${retAvg}%），腳本節奏或 Hook 後銜接需要全面檢查`;
+      retFix = '在 YouTube Studio 找出留存率急降的時間點（Dips），那一段是觀眾離開的主要原因。';
+      fixes.push('進 YouTube Analytics → Audience Retention，找出 Dips 所在秒數，重新設計那段腳本');
+    } else if (ret < retAvg) {
+      retLevel = 'warn';
+      retVerdict = `低於${typeName}平均（${retAvg}%），有優化空間`;
+      retFix = '觀察留存曲線的形狀：前段掉 = Hook 後銜接問題；中段掉 = 資訊密度問題；結尾掉 = 正常。';
+      fixes.push('優化腳本節奏：每 30–60 秒設計一個新的資訊點或情境轉換');
+    } else if (ret < 50) {
+      retLevel = 'ok';
+      retVerdict = `良好，高於${typeName}平均（${retAvg}%）`;
+    } else {
+      retLevel = 'ok';
+      retVerdict = `優秀！超過 50% 留存屬於前 16.8% 的影片`;
+    }
+    html += metricCard(`平均留存率（${typeName}）`, ret.toFixed(1), '%', retLevel, retVerdict,
+      `${typeName}平均：${retAvg}%｜全平台平均：23.7%｜超過50%的影片只佔 16.8%（Retention Rabbit 2025，10,000+影片樣本）`,
+      retFix);
+  }
+
+  // Quadrant (only if both entered)
+  if (!isNaN(ctr) && !isNaN(ret)) {
+    html += quadrantBox(ctr, ret);
+    const hiCTR = ctr >= 4, hiRet = ret >= 30;
+    if (hiCTR && !hiRet) {
+      fixes.unshift('⚠️ 高CTR+低留存 = Clickbait 訊號：確認標題承諾在影片前30秒有開始兌現');
+    } else if (!hiCTR && hiRet) {
+      fixes.unshift('內容有價值但包裝弱：優先優化標題和縮圖，不要動腳本內容');
+    } else if (!hiCTR && !hiRet) {
+      fixes.unshift('雙重問題：先從縮圖和標題開始改，改完後再評估腳本');
+    }
+  }
+
+  // DM diagnosis
+  if (dm !== null) {
+    let dmLevel = dm === 0 ? 'bad' : dm < 3 ? 'warn' : 'ok';
+    let dmVerdict = dm === 0 ? 'CTA 沒有觸發任何私訊行動' : dm < 3 ? '私訊數量偏少，CTA 或信任建立需要優化' : '私訊數量良好，轉化路徑有效';
+    let dmFix = dm < 3 ? '檢查 CTA 是否屬於安全設計（非 Engagement Bait），並確認 CTA 語句有明確說明私訊的理由。' : null;
+    if (dm < 3) fixes.push('優化 CTA：改成「如果你現在卡在＿＿，可以私訊我」，說明私訊的具體理由');
+    html += metricCard('DM 私訊數量（7天）', dm, ' 則', dmLevel, dmVerdict,
+      '參考：DM 是最高意向的轉化訊號，單一影片7天內有3則以上代表 CTA 和信任建立有效（AK 實務框架）', dmFix);
+  }
+
+  if (fixes.length > 0) html += nextFixBox(fixes);
+  out.innerHTML = html;
+  out.classList.add('show');
+}
+
+function diagnoseIG() {
+  const viewers = parseInt(document.getElementById('ig-viewers').value) || null;
+  const views = parseInt(document.getElementById('ig-views').value) || null;
+  const interactions = parseInt(document.getElementById('ig-int').value) || null;
+  const sends = parseInt(document.getElementById('ig-sends').value) || null;
+  const out = document.getElementById('ig-results');
+
+  if (!viewers && !interactions) {
+    out.innerHTML = '<div class="callout callout-warn">請至少輸入 Viewers 或 Interactions。</div>';
+    out.classList.add('show'); return;
+  }
+
+  let html = '';
+  const fixes = [];
+
+  if (viewers && views) {
+    const replayRatio = ((views - viewers) / viewers * 100).toFixed(1);
+    const replayLevel = replayRatio > 20 ? 'ok' : replayRatio > 5 ? 'warn' : 'info';
+    html += metricCard('重播率（Views/Viewers - 1）', replayRatio, '%', replayLevel,
+      replayRatio > 20 ? '重播率高，內容有留下來重看的價值' : replayRatio > 5 ? '有部分重播，可持續優化內容密度' : '重播率偏低，內容可能看一次就夠了',
+      'Views 通常大於 Viewers（2026新指標）｜差值代表重複觀看次數（meta_2026_reporting_changes）', null);
+  }
+
+  if (viewers && interactions) {
+    const intRate = (interactions / viewers * 100).toFixed(1);
+    let intLevel, intVerdict, intFix;
+    if (intRate < 1) {
+      intLevel = 'bad';
+      intVerdict = '互動率低於 1%，內容沒有驅動主動行動';
+      intFix = '在影片結尾加入具體的開放式問題，讓觀眾有話說，而不是只按讚。';
+      fixes.push('結尾設計具體問題：「你現在卡在哪一步？」而非「你覺得呢？」');
+    } else if (intRate < 3) {
+      intLevel = 'warn';
+      intVerdict = '互動率在 1–3%，有基本互動但可以更高';
+      intFix = '確認 CTA 是否觸發了真實的討論，而非機械式按讚。';
+    } else if (intRate < 6) {
+      intLevel = 'ok';
+      intVerdict = '互動率良好（3–6%），觀眾有真實參與';
+    } else {
+      intLevel = 'ok';
+      intVerdict = '互動率優秀（>6%），內容有強烈共鳴';
+    }
+    html += metricCard('Interactions 互動率（/Viewers）', intRate, '%', intLevel, intVerdict,
+      '2026新指標：Interactions 只計算主動意願行為（按讚、留言、分享、收藏），比舊 Engagement 更嚴格（meta_2026_reporting_changes）', intFix);
+  }
+
+  if (viewers && sends) {
+    const sendRate = (sends / viewers * 100).toFixed(2);
+    let sendLevel = sendRate > 2 ? 'ok' : sendRate > 0.5 ? 'warn' : 'bad';
+    let sendVerdict = sendRate > 2 ? '私訊分享率高，內容有「值得傳給朋友」的價值' :
+      sendRate > 0.5 ? '有基本分享，可繼續優化內容的傳播誘因' : '私訊分享率低，內容缺少「轉發動機」';
+    let sendFix = sendRate < 0.5 ? '設計一個「值得私訊給特定朋友」的內容點，例如：反常識結論、實用工具、強烈情感共鳴。' : null;
+    if (sendRate < 0.5) fixes.push('加入一個「值得傳給朋友」的具體內容點：反常識結論或實用工具清單');
+    html += metricCard('Sends 私訊分享率（/Viewers）', sendRate, '%', sendLevel, sendVerdict,
+      'Mosseri（ig_verge_views_sends）：Sends per Reach 是 Instagram 最有價值的互動訊號（high_confidence）', sendFix);
+  }
+
+  if (fixes.length > 0) html += nextFixBox(fixes);
+  else if (html) html += `<div class="callout callout-ok" style="margin-top:12px">✅ 目前指標表現良好，繼續維持現有策略並持續追蹤趨勢。</div>`;
+
+  out.innerHTML = html;
+  out.classList.add('show');
+}
+
+function diagnoseFB() {
+  const viewers = parseInt(document.getElementById('fb-viewers').value) || null;
+  const interactions = parseInt(document.getElementById('fb-int').value) || null;
+  const comments = parseInt(document.getElementById('fb-comments').value) || null;
+  const replies = parseInt(document.getElementById('fb-replies').value) || null;
+  const out = document.getElementById('fb-results');
+
+  if (!viewers && !interactions) {
+    out.innerHTML = '<div class="callout callout-warn">請至少輸入 Viewers 或 Interactions。</div>';
+    out.classList.add('show'); return;
+  }
+
+  let html = '';
+  const fixes = [];
+
+  if (fbMode === 'mixed') {
+    html += '<div class="callout callout-warn" style="margin-bottom:12px">⚠️ 含付費數據：以下診斷準確度較低，建議取得純 Organic 數字後重新診斷。</div>';
+  }
+
+  if (viewers && interactions) {
+    const intRate = (interactions / viewers * 100).toFixed(1);
+    let intLevel = intRate > 3 ? 'ok' : intRate > 1 ? 'warn' : 'bad';
+    let intVerdict = intRate > 3 ? '互動率良好，Interactions 對 UTIS 有正向貢獻' :
+      intRate > 1 ? '互動率普通，可優化 MSI 設計提升真實互動' : '互動率偏低，需檢查內容是否觸發真實討論';
+    let intFix = intRate < 1 ? '重新設計結尾的 Discussion-Starter：具體情境問題比「你覺得呢」更有效。' : null;
+    if (intRate < 1) fixes.push('設計 Discussion-Starter：「你遇過這種情況嗎？當時怎麼處理？」');
+    html += metricCard('Interactions 互動率（/Viewers）', intRate, '%', intLevel, intVerdict,
+      '2026新指標：只計算主動意願行為，比舊 Engagement 更嚴格。Facebook Feed 重視 MSI（Meaningful Social Interactions）（meta_2026_reporting_changes）', intFix);
+  }
+
+  if (comments && replies) {
+    const msiRatio = (replies / comments * 100).toFixed(1);
+    let msiLevel = msiRatio > 40 ? 'ok' : msiRatio > 20 ? 'warn' : 'bad';
+    let msiVerdict = msiRatio > 40 ? '留言品質高，有真實的來回討論（MSI）' :
+      msiRatio > 20 ? '有部分真實討論，可繼續優化 Discussion-Starter 設計' : '留言多但缺少來回互動，可能是機械式留言或單向反應';
+    let msiFix = msiRatio < 20 ? '主動回覆第一波留言，帶動二輪討論。讓觀眾感覺你真的在聽。' : null;
+    if (msiRatio < 20) fixes.push('主動回覆前10則留言，用問題帶動二輪對話，這是 MSI 最快的提升方式');
+    html += metricCard('MSI 品質（來回討論 / 留言數）', msiRatio, '%', msiLevel, msiVerdict,
+      'Facebook MSI（fb_msi_newsroom official）：back_and_forth_replies 是 Feed 演算法最重視的互動品質訊號', msiFix);
+  }
+
+  if (fixes.length > 0) html += nextFixBox(fixes);
+  else if (html) html += `<div class="callout callout-ok" style="margin-top:12px">✅ 目前指標表現良好，繼續維持現有策略。</div>`;
+
+  out.innerHTML = html;
+  out.classList.add('show');
+}
+
 // ── NAVIGATION ──
 function nav(id) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
   document.getElementById('page-' + id).classList.add('active');
-  document.getElementById('nb-' + id).classList.add('active');
+  const nb = document.getElementById('nb-' + id);
+  if (nb) nb.classList.add('active');
 }
 
 // ── CARD ACCORDION ──
