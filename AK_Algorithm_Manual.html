@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AK 三平台演算法實戰手冊 v2.2.1｜Stable RC Navigation Fix</title>
+<title>AK 三平台演算法實戰手冊 v2.2.2｜Beginner Start Patch</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
@@ -589,13 +589,14 @@ tr:nth-child(even) td{background:rgba(100,70,40,0.04)}
 .sep{height:1px;background:var(--border);margin:16px 0}
 </style>
 <!-- AK_Algorithm_Manual_v2_2_1_Stable_RC_Navigation_Fix -->
+<!-- AK_Algorithm_Manual_v2_2_2_Beginner_Start_Patch -->
 </head>
 <body>
 <div class="shell">
 
 <header class="topbar">
   <div class="logo">AK <span>三平台演算法</span> 實戰手冊</div>
-  <span class="v-badge">v2.2.1</span>
+  <span class="v-badge">v2.2.2</span>
   <div class="topbar-right">
     <button class="print-btn" onclick="window.print()">🖨 列印 / PDF</button>
   </div>
@@ -603,6 +604,12 @@ tr:nth-child(even) td{background:rgba(100,70,40,0.04)}
 
 <div class="toolmap-bar">
   <span class="tm-label">Tool Map</span>
+  <div class="tm-chip tm-pre" onclick="nav('beginner')">
+    <span class="tm-chip-name">🌱 新手入口</span>
+    <span class="tm-chip-sub">3 分鐘讀懂</span>
+  </div>
+  <span class="tm-arrow">→</span>
+
 
   <div class="tm-chip tm-pre" onclick="nav('audit')">
     <span class="tm-chip-name">✅ 發布前審計</span>
@@ -656,7 +663,10 @@ tr:nth-child(even) td{background:rgba(100,70,40,0.04)}
 
 <nav class="sidebar">
   <span class="sb-label">工具模式</span>
-  <button class="nav-btn active" onclick="nav('audit')" id="nb-audit">
+  <button class="nav-btn active" onclick="nav('beginner')" id="nb-beginner">
+    <span class="nav-icon">🌱</span>新手從這裡開始
+  </button>
+  <button class="nav-btn" onclick="nav('audit')" id="nb-audit">
     <span class="nav-icon">✅</span>發布前審計清單
   </button>
   <button class="nav-btn" onclick="nav('quick')" id="nb-quick">
@@ -707,7 +717,116 @@ tr:nth-child(even) td{background:rgba(100,70,40,0.04)}
 
 <main class="main">
 
-<div class="page active" id="page-audit">
+
+<div class="page active" id="page-beginner">
+  <div class="page-title">🌱 新手從這裡開始｜3 分鐘讀懂這份手冊</div>
+  <div class="page-sub">這不是演算法密技大全，而是一套「發布前避雷、發布後判讀、下一支改哪裡」的工作流程。</div>
+
+  <div class="callout callout-ok">
+    <b>先記住一句話：</b><br>
+    平台不是在獎勵你「看起來很會做內容」，而是在測試：<br>
+    <b>對的人看到前 3 秒會不會停下來？看完後覺得有沒有收穫？內容有沒有踩平台紅線？</b>
+  </div>
+
+  <div class="card open">
+    <div class="card-head" onclick="toggleCard(this)">
+      <h3>這份手冊到底在教什麼？</h3>
+      <span class="card-toggle">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>一般人以為</th><th>這份手冊真正教你</th></tr>
+          <tr><td>演算法有一組神秘公式</td><td>不要猜公式，要看平台給你的數據與限制。</td></tr>
+          <tr><td>流量不好就是被限流</td><td>先分清楚：開頭沒停住人、內容沒留住人，還是真的被安全規則卡住。</td></tr>
+          <tr><td>只要叫大家留言、按讚、分享就會變好</td><td>機械式互動誘導可能踩平台紅線；好的 CTA 要跟內容價值有關。</td></tr>
+          <tr><td>每個平台都一樣</td><td>YouTube、Instagram、Facebook 的判斷邏輯不同，不能混用。</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="card open">
+    <div class="card-head" onclick="toggleCard(this)">
+      <h3>中學生版：把平台想像成三位老師</h3>
+      <span class="card-toggle">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="do-dont">
+        <div class="do-block">
+          <div class="do-title">▶ YouTube 老師</div>
+          <div class="do-item">他會問：這支影片有沒有讓人看久？觀眾看完有沒有覺得值得？</div>
+          <div class="do-item">所以你要重視：標題承諾、觀看時間、滿意度、搜尋意圖。</div>
+        </div>
+        <div class="do-block">
+          <div class="do-title">📸 Instagram 老師</div>
+          <div class="do-item">他會問：這支 Reels 一開始適合推給哪一群人？他們會不會轉傳？</div>
+          <div class="do-item">所以你要重視：前三秒、受眾身份、畫面文字、分享點。</div>
+        </div>
+      </div>
+      <div class="do-dont">
+        <div class="do-block">
+          <div class="do-title">💙 Facebook 老師</div>
+          <div class="do-item">他會問：這內容跟使用者的興趣、朋友、社群關係有沒有關？</div>
+          <div class="do-item">所以你要重視：互動意義、社群脈絡、討論價值。</div>
+        </div>
+        <div class="dont-block">
+          <div class="dont-title">三位老師都討厭</div>
+          <div class="dont-item">搬運、誤導、假互動、空泛標題、承諾不兌現。</div>
+          <div class="dont-item">所以你發布前，要先跑 Safety / Audit，而不是先想怎麼衝流量。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card open">
+    <div class="card-head" onclick="toggleCard(this)">
+      <h3>新手只要照這 5 步走</h3>
+      <span class="card-toggle">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>步驟</th><th>你要做什麼</th><th>去看哪一頁</th></tr>
+          <tr><td>1</td><td>先確認內容沒有踩平台紅線。</td><td>Safety Gate / 發布前審計</td></tr>
+          <tr><td>2</td><td>用三平台速查表確認這支內容主要要發在哪裡。</td><td>速查參考表</td></tr>
+          <tr><td>3</td><td>先把前三秒設計清楚：誰該停下來？為什麼要看？</td><td>Instagram / 跨平台共通</td></tr>
+          <tr><td>4</td><td>發布後不要只看 views，要看停留、完播、互動、分享。</td><td>數據診斷 / Benchmark</td></tr>
+          <tr><td>5</td><td>不要一次改全部，只選下一支要修的一刀。</td><td>數據診斷結果 / 常見迷思</td></tr>
+        </table>
+      </div>
+      <div class="callout callout-info">
+        <b>新手閱讀順序：</b><br>
+        ① 新手從這裡開始 → ② 發布前審計 → ③ 速查參考表 → ④ 常見迷思破解。<br>
+        等你有後台數據後，再看：數據診斷、Benchmark、YouTube / IG / FB 深度章節。
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head" onclick="toggleCard(this)">
+      <h3>如果要開成課，大約要幾小時？</h3>
+      <span class="card-toggle">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>課程版本</th><th>適合對象</th><th>時長</th><th>目標</th></tr>
+          <tr><td>極簡直播版</td><td>完全新手</td><td>60–90 分鐘</td><td>知道演算法不是神秘公式，能完成發布前避雷。</td></tr>
+          <tr><td>入門課版</td><td>想開始經營內容的人</td><td>3–4 小時</td><td>看懂三平台差異，能設計前三秒與基本 CTA。</td></tr>
+          <tr><td>完整教學版</td><td>要認真做短影音 / 內容變現的人</td><td>6–8 小時</td><td>能使用整份 Manual 做發布前審計與發布後診斷。</td></tr>
+          <tr><td>實作陪跑版</td><td>已有帳號與後台數據的人</td><td>8–12 小時</td><td>拿自己的影片數據做診斷，修出下一支內容策略。</td></tr>
+        </table>
+      </div>
+      <div class="callout callout-gold">
+        <b>建議定位：</b>如果要讓「中學生也能懂」，主課不要一開始就講 UTIS、MSI、Aggregator Penalty。先用「三位老師」與「五步流程」教會判斷，再把這份 HTML 當作工具書查閱。
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="page" id="page-audit">
   <div class="page-title">✅ 發布前審計清單</div>
   <div class="page-sub">每次發布前完成 Tier 1 + Tier 2，Tier 3 建議但可略過</div>
 
