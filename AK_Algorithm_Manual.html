@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AK 三平台演算法實戰手冊 v1.1｜Platform Safety Patch v1.0</title>
+<title>AK 三平台演算法實戰手冊 v2.2.1｜Stable RC Navigation Fix</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
@@ -51,7 +51,6 @@
 .diag-tab:hover:not(.active){background:var(--bg3)}
 .diag-platform{display:none}.diag-platform.active{display:block}
 .input-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px}
-.input-grid.single{grid-template-columns:1fr}
 .input-group{display:flex;flex-direction:column;gap:6px}
 .input-label{font-size:12px;font-weight:600;color:var(--text2);display:flex;align-items:center;gap:6px}
 .input-source{font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--text3)}
@@ -486,7 +485,7 @@ tr:nth-child(even) td{background:rgba(100,70,40,0.04)}
 .bench-ok{color:var(--green)}
 .bench-good{color:var(--blue)}
 
-/* ── DO/DONT ── */
+/* ── DO/DONT & MASTER CASES ── */
 .do-dont{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0}
 .do-block,.dont-block{
   padding:10px 12px;
@@ -500,6 +499,32 @@ tr:nth-child(even) td{background:rgba(100,70,40,0.04)}
 .do-item,.dont-item{margin-bottom:5px;padding-left:14px;position:relative;font-size:12px;line-height:1.5}
 .do-item::before{content:'✓';position:absolute;left:0;color:var(--green);font-weight:700}
 .dont-item::before{content:'✗';position:absolute;left:0;color:var(--accent);font-weight:700}
+
+.master-case-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 10px;
+}
+.master-case-pro {
+  background: rgba(39,113,74,0.04);
+  border: 1px solid rgba(39,113,74,0.2);
+  padding: 12px;
+  border-radius: var(--radius2);
+}
+.master-case-junior {
+  background: rgba(184,134,11,0.04);
+  border: 1px solid rgba(184,134,11,0.2);
+  padding: 12px;
+  border-radius: var(--radius2);
+}
+.case-title-label {
+  font-weight: 700;
+  font-size: 11px;
+  margin-bottom: 6px;
+  font-family: 'Syne', sans-serif;
+  display: block;
+}
 
 /* ── SIGNAL CARD ── */
 .sig{
@@ -563,22 +588,19 @@ tr:nth-child(even) td{background:rgba(100,70,40,0.04)}
 .row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .sep{height:1px;background:var(--border);margin:16px 0}
 </style>
-<!-- AK_Platform_Safety_Patch_v1.0 -->
-<!-- AK_Platform_Safety_Display_Fix_v1.1 -->
+<!-- AK_Algorithm_Manual_v2_2_1_Stable_RC_Navigation_Fix -->
 </head>
 <body>
 <div class="shell">
 
-<!-- TOP BAR -->
 <header class="topbar">
   <div class="logo">AK <span>三平台演算法</span> 實戰手冊</div>
-  <span class="v-badge">v1.1</span>
+  <span class="v-badge">v2.2.1</span>
   <div class="topbar-right">
     <button class="print-btn" onclick="window.print()">🖨 列印 / PDF</button>
   </div>
 </header>
 
-<!-- TOOL MAP BAR -->
 <div class="toolmap-bar">
   <span class="tm-label">Tool Map</span>
 
@@ -621,13 +643,17 @@ tr:nth-child(even) td{background:rgba(100,70,40,0.04)}
     <span class="tm-chip-sub">數字基準線</span>
   </div>
 
+  <div class="tm-chip tm-ref" onclick="nav('credibility')">
+    <span class="tm-chip-name">🔖 可信度</span>
+    <span class="tm-chip-sub">Claim Level</span>
+  </div>
+
   <div class="tm-chip tm-ref" onclick="nav('myths')">
     <span class="tm-chip-name">💡 迷思破解</span>
     <span class="tm-chip-sub">常見錯誤</span>
   </div>
 </div>
 
-<!-- SIDEBAR -->
 <nav class="sidebar">
   <span class="sb-label">工具模式</span>
   <button class="nav-btn active" onclick="nav('audit')" id="nb-audit">
@@ -672,15 +698,15 @@ tr:nth-child(even) td{background:rgba(100,70,40,0.04)}
     <span class="nav-icon">📋</span>版本紀錄
   </button>
 
+  <button class="nav-btn" onclick="nav('credibility')" id="nb-credibility">
+    <span class="nav-icon">🔖</span>可信度分級
+  </button>
+
   <button class="nav-btn" onclick="nav('safety')" id="nb-safety"><span class="nav-icon">🛡</span>🛡 Safety Gate</button>
 </nav>
 
-<!-- MAIN -->
 <main class="main">
 
-<!-- ══════════════════════════════════════
-     PAGE: AUDIT
-══════════════════════════════════════ -->
 <div class="page active" id="page-audit">
   <div class="page-title">✅ 發布前審計清單</div>
   <div class="page-sub">每次發布前完成 Tier 1 + Tier 2，Tier 3 建議但可略過</div>
@@ -690,51 +716,44 @@ tr:nth-child(even) td{background:rgba(100,70,40,0.04)}
     <span class="audit-score">已完成：<span id="audit-count">0</span> / <span id="audit-total">0</span></span>
   </div>
 
-  <!-- TIER 1 -->
   <div class="tier-block tier-1">
     <div class="tier-label">🔴 Tier 1｜致命違規——不通過不能發布</div>
-
     <div class="check-item" onclick="toggle(this)">
       <div class="check-box">✓</div>
       <div>
         <div class="check-text">【原創性】影片完全無他平台浮水印，且有真實人類創意投入（非純 AI 模板化內容）</div>
         <div class="check-meta">yt_inauthentic_content_2025 (official) · ig_original_content_guidelines (official)</div>
-        <div class="check-warn">⚠ 違反：YouTube 頻道終止 / Instagram 推薦觸及下跌 60-80%</div>
+        <div class="check-warn">⚠ 違反：YouTube 頻道終止 / Instagram 推薦觸及可能顯著下降（實際幅度需帳號實測校準）</div>
       </div>
     </div>
-
     <div class="check-item" onclick="toggle(this)">
       <div class="check-box">✓</div>
       <div>
         <div class="check-text">【互動誘餌】結尾或文案中絕對沒有「留言+1」「按讚解鎖」「分享給三個朋友」等機械式指令</div>
         <div class="check-meta">yt_fake_engagement_policy (official) · fb_engagement_bait_help (official) · ig_engagement_bait_reach (high_confidence)</div>
-        <div class="check-warn">⚠ 違反：YT 頻道終止 / FB 粉專觸及歸零 / IG Explore 觸及降低</div>
+        <div class="check-warn">⚠ 違反：YT 頻道終止 / FB 粉專觸及降權 / IG Explore 觸及降低</div>
       </div>
     </div>
-
     <div class="check-item" onclick="toggle(this)">
       <div class="check-box">✓</div>
       <div>
         <div class="check-text">【推薦資格】Instagram 帳號狀態正常，無違規記錄，無浮水印搬運</div>
         <div class="check-meta">ig_recommendation_eligibility (official)</div>
-        <div class="check-warn">⚠ 違反：失去 Explore 推薦資格</div>
+        <div class="check-warn">⚠ 違反：失去 Explore 與 Reels 推薦資格</div>
       </div>
     </div>
   </div>
 
-  <!-- TIER 2 -->
   <div class="tier-block tier-2">
     <div class="tier-label">🟡 Tier 2｜演算法毒藥——強烈建議修正後再發布</div>
-
     <div class="check-item" onclick="toggle(this)">
       <div class="check-box">✓</div>
       <div>
         <div class="check-text">【承諾兌現】影片前 30 秒開始兌現標題與縮圖的承諾，無過度誇大或隱藏關鍵資訊</div>
         <div class="check-meta">yt_blog_recommendation_system (official)</div>
-        <div class="check-warn">⚠ 違反：高 CTR 低留存，系統視為 Clickbait，長期推薦下降</div>
+        <div class="check-warn">⚠ 違反：高 CTR 低留存，可能形成承諾不兌現訊號，後續分發信心下降（practical_inference）</div>
       </div>
     </div>
-
     <div class="check-item" onclick="toggle(this)">
       <div class="check-box">✓</div>
       <div>
@@ -745,10 +764,8 @@ tr:nth-child(even) td{background:rgba(100,70,40,0.04)}
     </div>
   </div>
 
-  <!-- TIER 3 -->
   <div class="tier-block tier-3">
     <div class="tier-label">🔵 Tier 3｜效能折損——建議優化，可略過</div>
-
     <div class="check-item" onclick="toggle(this)">
       <div class="check-box">✓</div>
       <div>
@@ -756,15 +773,13 @@ tr:nth-child(even) td{background:rgba(100,70,40,0.04)}
         <div class="check-meta">ig_creators_breakthrough (official) · practical_inference</div>
       </div>
     </div>
-
     <div class="check-item" onclick="toggle(this)">
       <div class="check-box">✓</div>
       <div>
         <div class="check-text">【IG Caption SEO】Instagram Caption 自然包含目標受眾會搜尋的關鍵詞，非堆砌 hashtag</div>
-        <div class="check-meta">ig_keyword_discovery_2025 (high_confidence) v1.1新增</div>
+        <div class="check-meta">ig_keyword_discovery_2025 (high_confidence)</div>
       </div>
     </div>
-
     <div class="check-item" onclick="toggle(this)">
       <div class="check-box">✓</div>
       <div>
@@ -772,7 +787,6 @@ tr:nth-child(even) td{background:rgba(100,70,40,0.04)}
         <div class="check-meta">fb_msi_newsroom (official) · practical_inference</div>
       </div>
     </div>
-
     <div class="check-item" onclick="toggle(this)">
       <div class="check-box">✓</div>
       <div>
@@ -780,20 +794,17 @@ tr:nth-child(even) td{background:rgba(100,70,40,0.04)}
         <div class="check-meta">yt_search_discovery (official)</div>
       </div>
     </div>
-
     <div class="check-item" onclick="toggle(this)">
       <div class="check-box">✓</div>
       <div>
         <div class="check-text">【主題一致性】此內容是否符合帳號最近 9-12 篇的主題分類，不偏離核心定位</div>
-        <div class="check-meta">ig_your_algorithm_2025 (high_confidence) v1.1新增</div>
+        <div class="check-meta">ig_your_algorithm_2025 (high_confidence)</div>
+        <div class="check-warn">⚠ 偏離：帳號演算法分類標籤污染，分發效率下降</div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ══════════════════════════════════════
-     PAGE: QUICK
-══════════════════════════════════════ -->
 <div class="page" id="page-quick">
   <div class="page-title">⚡ 速查參考表</div>
   <div class="page-sub">三平台核心差異 + 最高 ROI 三件事</div>
@@ -829,7 +840,7 @@ tr:nth-child(even) td{background:rgba(100,70,40,0.04)}
             <td><b>首要官方訊號</b></td>
             <td>watch time · CTR · survey responses · engaged views</td>
             <td>watch time · retention · shares · audience matching · originality</td>
-            <td>UTIS · watch time · retention · MSI · satisfaction</td>
+            <td>personalized ranking · watch time · retention · meaningful interactions · satisfaction</td>
           </tr>
           <tr>
             <td><b>發現機制</b></td>
@@ -841,13 +852,13 @@ tr:nth-child(even) td{background:rgba(100,70,40,0.04)}
             <td><b>前3秒目的</b></td>
             <td>從 views 轉為 engaged views</td>
             <td>明確呼叫受眾完成 audience matching</td>
-            <td>建立 true-interest-fit 符合 UTIS</td>
+            <td>符合個人化興趣預測 / 多模型受眾匹配</td>
           </tr>
           <tr>
             <td><b>原創性懲罰</b></td>
             <td>🔴 最嚴：頻道終止（2025/7 Inauthentic Content）</td>
-            <td>🔴 極嚴：觸及 -60~80%，推薦中被原創者取代</td>
-            <td>🟡 中高：難以通過 UTIS 興趣匹配</td>
+            <td>🔴 極嚴：推薦觸及可能顯著下降，推薦流中被原創者取代（幅度需帳號實測校準）</td>
+            <td>🟡 中高：難以通過多模型個人化興趣匹配</td>
           </tr>
           <tr>
             <td><b>Engagement Bait 懲罰</b></td>
@@ -890,13 +901,13 @@ tr:nth-child(even) td{background:rgba(100,70,40,0.04)}
             <td><b>觸及邏輯</b></td>
             <td>搜尋 + 歷史興趣</td>
             <td>Audience matching（興趣標籤）</td>
-            <td>UTIS 真實興趣預測（獨立 AI 系統）</td>
+            <td>多模型個人化興趣預測（UTIS 為歷史術語；官方描述為 100+ prediction models）</td>
           </tr>
           <tr>
             <td><b>搬運風險</b></td>
             <td>🔴 頻道終止</td>
-            <td>🔴 觸及 -60-80%（Aggregator Penalty）</td>
-            <td>🟡 UTIS 難以通過</td>
+            <td>🔴 推薦觸及可能顯著下降（Aggregator Penalty，幅度需實測校準）</td>
+            <td>🟡 難以通過個人化興趣與內容品質預測</td>
           </tr>
         </table>
       </div>
@@ -904,12 +915,9 @@ tr:nth-child(even) td{background:rgba(100,70,40,0.04)}
   </div>
 </div>
 
-<!-- ══════════════════════════════════════
-     PAGE: YOUTUBE
-══════════════════════════════════════ -->
 <div class="page" id="page-yt">
   <div class="page-title">▶ YouTube 演算法訊號</div>
-  <div class="page-sub">點擊展開各訊號的詳細說明與執行方法</div>
+  <div class="page-sub">觀看滿意度校正與意圖配對</div>
 
   <div class="card open">
     <div class="card-head" onclick="toggleCard(this)">
@@ -917,51 +925,71 @@ tr:nth-child(even) td{background:rgba(100,70,40,0.04)}
       <span class="card-toggle">▼</span>
     </div>
     <div class="card-body">
+      
       <div class="callout callout-info">
-        腳本設計順序：<b>Satisfaction → CTR → Retention</b><br>
-        先想「觀眾看完後解決了什麼問題」，再逆向設計標題承諾，最後搭建中段留存結構。
+        <b>腳本設計順序：Satisfaction → CTR → Retention</b><br>
+        先想「觀眾看完後解決了什麼問題」，<br>
+        再逆向設計標題縮圖的承諾（CTR），<br>
+        最後搭建中段的留存節奏結構（Retention）。<br>
+        改變的是思考順序，不是技術動作。<br>
+        <span style="font-size:11px; font-family:var(--font-mono); margin-top:4px; display:inline-block; opacity:0.8;">source: yt_blog_recommendation_system (official)</span>
       </div>
+
       <div class="sig mt12">
         <div class="sig-head"><span class="sig-name">CTR｜點擊率</span><span class="badge-official">official</span></div>
-        <div class="sig-body">系統展示後是否有人點擊，測試標題縮圖吸引力。高 CTR 但低留存 = 系統判定為 Clickbait，長期推薦下降。標題縮圖承諾必須在前 30 秒開始兌現。</div>
+        <div class="sig-body">系統展示後是否有人點擊。高 CTR 但低留存，通常代表標題／縮圖承諾未被內容兌現，可能降低觀眾滿意度與後續分發信心。（practical_inference；非官方固定懲罰公式）</div>
         <div class="sig-meta">source: yt_blog_recommendation_system</div>
       </div>
       <div class="sig">
         <div class="sig-head"><span class="sig-name">Watch Time + Retention｜觀看時間與留存</span><span class="badge-official">official</span></div>
-        <div class="sig-body">前 30 秒必須讓觀眾覺得值得繼續看。中段每段落需有新資訊點。不要用無意義片頭、重複內容拉長時間。<br><b>基準：</b>平均 23.7%，教育類 42.1%，30%+ 算良好。</div>
-        <div class="sig-meta">source: yt_help_recommendation_system · benchmark: retention_rabbit_2025</div>
+        <div class="sig-body">前 30 秒必須讓觀眾覺得值得繼續看。中段每段落需有新資訊點。</div>
+        <div class="sig-meta">source: yt_help_recommendation_system</div>
       </div>
       <div class="sig">
         <div class="sig-head"><span class="sig-name">Survey Responses｜滿意度調查</span><span class="badge-official">official</span></div>
         <div class="sig-body">YouTube 直接向觀眾發問卷。這是最難偽造的訊號——讓觀眾真的有收穫比讓觀眾繼續看更重要。</div>
         <div class="sig-meta">source: yt_blog_recommendation_system</div>
       </div>
+
+      <div class="master-case-grid">
+        <div class="master-case-pro">
+          <span class="case-title-label">💡 頂級大師實戰落地案例 (Use Case)</span>
+          <p><b>自動補全挖掘真心話：</b> 在 YouTube 搜尋欄輸入核心根詞「短影音變現」，觀察自動補全的下拉長尾詞。若出現「短影音變現免費工具」，說明這群受眾只想白嫖，若你賣的是高客單價課程，腳本就必須避開該詞，改用會引發高商業意向的關鍵字如「短影音變現私訊漏斗設定」。</p>
+          <p class="mt8"><b>描述檔前兩行自然嵌入：</b> 拒絕關鍵字無意義堆砌，採用敘事型嵌入：<br><code>"這支影片將深度拆解 2026 影音變現演算法 的底層排序機制，並分享我如何利用 短影音自動化腳本 解決觸及停滯的真實案例..."</code></p>
+        </div>
+        <div class="master-case-junior">
+          <span class="case-title-label">👦 國中生白話翻譯模式</span>
+          <p><b>搜尋欄自動補全：</b> 就像你肚子餓打「台中 美食」，下面跳出「台中 美食 便宜」一樣。這些跳出來的字，是全台灣上萬個真人從鍵盤敲出來的「真心話」。大師教你，不要坐在房間裡瞎編觀眾想看什麼，先看搜尋欄下拉選單，機器人直接把滿分密碼告訴你了！</p>
+          <p class="mt8"><b>描述檔前兩行：</b> YouTube 機器人其實是一個「瞎子」，它看不懂你的影片畫面，只能讀你的文字。前兩行是它最先讀、也是觀眾在點進來前唯一看得到的地方。第一行你要自然寫出機器人要抓的字，第二行要講出一句讓真人不點進來看就會失眠的誘因！</p>
+        </div>
+      </div>
     </div>
   </div>
 
   <div class="card">
     <div class="card-head" onclick="toggleCard(this)">
-      <h3>🆕 2025年7月 Inauthentic Content 政策</h3>
+      <h3>🆕 Inauthentic Content 政策與合規性審計</h3>
       <span class="card-toggle">▼</span>
     </div>
     <div class="card-body">
-      <div class="row mb8"><span class="badge-official">official</span><span class="badge-new">v1.1 新增</span></div>
+      <div class="row mb8"><span class="badge-official">official</span> / <span class="badge-high">high_confidence</span></div>
       <div class="callout callout-warn">
-        <b>從「重複上傳」擴大為「缺乏真正人類創意」。</b><br>
-        2025/7/15 更名。2026/1 發生史上最大規模 AI 頻道終止潮。
+        <b>官方規範（official）：從「重複上傳」擴大為「缺乏真正人類創意」。</b> 政策於 2025/7/15 正式更名實施。<br><br>
+        <b>社群實務觀測（high_confidence）：</b> 2026/1 前後發生大規模 AI 自動生成 Faceless 頻道終止。
       </div>
+      
       <div class="do-dont mt8">
         <div class="do-block">
           <div class="do-title">✅ 合規用法</div>
-          <div class="do-item">AI 輔助撰寫腳本，但加入自己的觀點和案例</div>
-          <div class="do-item">AI 剪輯後創作者親自錄製旁白</div>
-          <div class="do-item">每支影片有「只有我這個創作者能說的」的核心</div>
+          <div class="do-item">AI 負責梳理大綱，創作者親自手動注入獨家品牌案例與實測數據</div>
+          <div class="do-item">使用 AI 快速生成粗剪畫面，但音軌使用創作者真人口播或實景錄音</div>
+          <div class="do-item">每支影片皆具備不可被 AI 取代的真實人類觀察或實務見解</div>
         </div>
         <div class="dont-block">
-          <div class="dont-title">❌ 違規用法</div>
-          <div class="dont-item">純 AI 生成腳本 + 合成語音，無人類投入</div>
-          <div class="dont-item">同一模板大量生產，只換關鍵字</div>
-          <div class="dont-item">Faceless 頻道完全無編輯判斷</div>
+          <div class="dont-title">❌ 違規風險用法</div>
+          <div class="dont-item">純粹利用 AI 批量生成短腳本並全權搭配批量合成語音，零人工調整</div>
+          <div class="dont-item">使用網頁上完全重複的畫面模板，僅更換名詞批量上傳</div>
+          <div class="dont-item">Faceless 頻道完全依賴自動化工具，徹底缺乏人類進行編輯性篩選與判斷</div>
         </div>
       </div>
       <div class="sig-meta mt8">source: yt_inauthentic_content_2025 · yt_channel_monetization_policies</div>
@@ -1011,20 +1039,136 @@ tr:nth-child(even) td{background:rgba(100,70,40,0.04)}
       <div class="sig-meta mt8">source: yt_fake_engagement_policy (answer/3399767)</div>
     </div>
   </div>
+
 </div>
 
-<!-- ══════════════════════════════════════
-     PAGE: INSTAGRAM
-══════════════════════════════════════ -->
 <div class="page" id="page-ig">
   <div class="page-title">📸 Instagram 演算法訊號</div>
-  <div class="page-sub">IG 有五個獨立排序系統：Feed · Stories · Explore · Reels · Search</div>
+  <div class="page-sub">四個核心排序系統深度拆解 + Trial Reels 試播功能實戰</div>
 
-  <div class="callout callout-warn mb8">
-    <b>2025年12月重大更新（v1.1 新增）</b><br>
-    ① Your Algorithm 功能：最近 9-12 篇貼文決定帳號的演算法分類<br>
-    ② Aggregator Penalty：搬運帳號觸及 -60~80%，原創者觸及 +40~60%<br>
-    ③ Hashtag 降級：用戶已無法追蹤 hashtag，改為 Keyword-based Discovery
+  <div class="callout callout-info" style="margin-bottom:16px">
+    <b>2025/2026年重大更新</b><br>
+    ① <b>Your Algorithm 功能</b>：最近 9-12 篇貼文決定帳號的演算法分類<br>
+    ② <b>Aggregator Penalty</b>：搬運帳號觸及顯著下降，原創者觸及提升<br>
+    ③ <b>Hashtag 追蹤停用</b>：全面改由 Keyword-based Discovery 驅動
+  </div>
+
+  <div class="card open">
+    <div class="card-head" onclick="toggleCard(this)">
+      <h3>四大排序系統深度指標</h3>
+      <span class="card-toggle">▼</span>
+    </div>
+    <div class="card-body">
+      
+      <div class="sig">
+        <div class="sig-head"><span class="sig-name">1. Reels 系統（陌生拉新核心）</span><span class="badge-official">official</span></div>
+        <div class="sig-body">
+          <b>官方核心訊號：</b>Watch Time、Retention、Shares（私訊轉發率最高）、Audience Matching。
+          <li><b>大師級 Use Case：</b>Reels 的本質是「破圈」。改用一個「反常識觀點」切入，並在影片第 20 秒設計 <b>Send-Worthy Point</b>：在畫面跳出高對比知識圖表時，明講：<code>「這張對比表太重要了，建議直接按左下角分享給你的個人品牌經營夥伴」</code>，強行拉高 Sends 訊號。</li>
+          <li><b>國中生白話：</b>Reels 就是幫你去學校發傳單給不認識你的人。前 3 秒開頭直接講痛點，中間逼他分享，傳單才發得出去！</li>
+        </div>
+        <div class="sig-meta">source: ig_creators_breakthrough</div>
+      </div>
+
+      <div class="sig">
+        <div class="sig-head"><span class="sig-name">2. Stories 系統（私域導購與變現承接）</span><span class="badge-official">official</span></div>
+        <div class="sig-body">
+          <b>官方核心訊號：</b>回覆率（Replies）、點擊貼圖（Sticker Taps）、退出率（Exits）、既有關係強度（Relationship Strength）。
+          <li><b>大師級 Use Case：</b>Stories 是你的「收銀台」。設計一個問答貼圖或投票：「你目前卡在私訊還是觸及？」，凡點擊的用戶，立刻觸及一對一私訊，這在實務上是高客單價成交的最短路徑。</li>
+          <li><b>國中生白話：</b>Stories 是留給已經跟你變熟的好朋友看的。多用投票、問答貼圖跟他們聊天，AI 優先把你的頭像顯示給他！</li>
+        </div>
+        <div class="sig-meta">source: ig_ranking_explained</div>
+      </div>
+
+      <div class="sig">
+        <div class="sig-head"><span class="sig-name">3. Explore 專區（陌生視覺發現）</span><span class="badge-official">official</span></div>
+        <div class="sig-body">
+          <b>官方核心訊號：</b>視覺相似度（Visual Similarity Mapping）、收藏數（Saves）、按讚與點擊歷史。
+          <li><b>大師級 Use Case：</b>Explore 是「視覺分類放大器」。內容結尾設計 <b>Save-Worthy CTA</b>：<code>「這個 AI 檢查清單資訊量太大，建議立刻點擊右下角收藏，方便你今晚對著腳本逐行檢查。」</code>，收藏率一高，AI 就會將你推向更多同類別的陌生 Explore 牆面上。</li>
+          <li><b>國中生白話：</b>Explore 就像是學校布告欄的「猜你喜歡」專區。結尾一叫人「按收藏」，AI 就會自動幫你貼到大布告欄上！</li>
+        </div>
+        <div class="sig-meta">source: ig_ranking_explained · ig_how_instagram_works</div>
+      </div>
+
+      <div class="sig">
+        <div class="sig-head"><span class="sig-name">4. Search 系統（關鍵字檢索發現）</span><span class="badge-official">official</span></div>
+        <div class="sig-body">
+          <b>官方核心訊號：</b>輸入匹配度（Text Match）、帳號活躍關聯、用戶點擊行為歷史。
+          <li><b>大師級 Use Case：</b>Search 是「高意向流量攔截器」。內文前兩行必須自然包含該利基搜尋詞，而非塞在 Hashtag 裡。例如：<code>「這份針對 2026 影音變現演算法 的拆解...」</code>。當用戶主動搜尋該詞，系統會優先調出內文匹配、且帳號垂直度最高的內容。</li>
+          <li><b>國中生白話：</b>Search 就像查辭典。現在 AI 是直接讀你內文寫的字。如果你內文一個字都不寫，人家查字典就永遠查不到你！</li>
+        </div>
+        <div class="sig-meta">source: ig_ranking_explained · ig_keyword_discovery_2025</div>
+      </div>
+
+      <div class="sig">
+        <div class="sig-head"><span class="sig-name">🚀 Trial Reels 試播功能實戰</span><span class="badge-high">high_confidence</span></div>
+        <div class="sig-body">
+          <b>機制說明：</b>僅推送給非追蹤者（陌生受眾），不推給現有粉絲。
+          <li><b>大師級實戰操作 (Use Case)：</b>當你想測試全新產品線時，直接開啟 Trial Reels 投入純公域進行 48 小時盲測。專注審查 **Sends per Reach（私訊分享率是否 > 1.5%［此數值為創作者社群實測參考閾值，屬實務推論基準］）**。數據若達標，一鍵轉為公開 Reels，防範因內容偏離導致主帳號 `Your Algorithm` 標籤污染。</li>
+          <li><b>國中生白話：</b>這功能就像「戴面具去別的學校講笑話」。如果別校的人都沒笑（數據差），你不影響你本校的帥氣形象；如果別校的人笑翻了，你再大方拿回本校發布！</li>
+        </div>
+        <div class="sig-meta">source: ig_your_algorithm_2025 · ig_verge_trial_reels</div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="card open">
+    <div class="card-head" onclick="toggleCard(this)">
+      <h3>🔬 Audience Matching 深度機制（三階段測試）</h3>
+      <span class="badge-official">official</span>
+      <span class="card-toggle">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="sig">
+        <div class="sig-head"><span class="sig-name">三階段受眾測試機制</span><span class="badge-official">official</span></div>
+        <div class="sig-body">
+          Instagram 使用<b>多階段小眾測試</b>決定分發範圍，初始分發不依賴粉絲數：<br><br>
+          <b>階段一：特徵提取</b> — 發布瞬間，AI 掃描音訊（語音轉文字、背景音樂）、視覺（場景、物件）及文字（字幕、Caption、關鍵詞），建立初步「興趣標籤」。前三秒螢幕文字直接被 OCR 系統抓取用於受眾分類。<br><br>
+          <b>階段二：種子受眾測試</b> — 投放給一小群基於歷史行為匹配的陌生用戶。核心評估：<b>前三秒留存率（3-Second Hold Rate）</b>。低於 40% 通常代表第一輪測試表現偏弱，後續擴散機率下降。（practical_inference benchmark）<br><br>
+          <b>階段三：階梯式放大</b> — 種子受眾反應良好才推向更大圈受眾。核心評估：<b>Sends per Reach（私訊分享率）</b>、儲存率。
+        </div>
+        <div class="sig-meta">source: ig_creators_breakthrough (official, 2025-02-26) · ig_recommendations_originality (official, 2024-04-30)</div>
+      </div>
+
+      <div class="sig">
+        <div class="sig-head"><span class="sig-name">前三秒四層可操作設計指南</span><span class="badge-high">high_confidence</span></div>
+        <div class="sig-body">
+          <b>① 視覺中斷（Pattern Interrupt）</b> — 開場第一影格必須有動態，避免靜態 Logo 或人頭介紹。1.5 秒內完成第一次畫面切換。用戶行動裝置決策時間僅 <b>1.7 秒</b>，視覺刺激必須在此前發生。<br><br>
+          <b>② Me-Centric 螢幕字卡</b> — 「如何做到 X」改為「我如何作為 [特定身份] 做到 X」。身份識別關鍵字直接被 OCR 系統抓取，精準匹配相似背景受眾。<br><br>
+          <b>③ 音訊選擇</b> — 流行音訊（Trending Audio）自動與該音訊受眾池初始匹配。原創語音需確保前三秒語意清晰。<br><br>
+          <b>④ 3秒留存率監控基準</b> — 優質 Hook 應達 <b>60%+ 三秒留存率</b>，頂尖影片達 70-80%。低於 40% 通常代表第一輪測試表現偏弱，後續擴散機率下降。<span class="badge-inf">practical_inference</span>
+        </div>
+        <div class="sig-meta">source: Social Media Examiner (high_confidence, 2025-12-11) · DataSlayer (high_confidence, 2025-10-13) · Mosseri @mosseri (high_confidence, 2025-01)</div>
+      </div>
+
+      <div class="sig">
+        <div class="sig-head"><span class="sig-name">帳號歷史的雙重效應（官方 vs 業界實測）</span><span class="badge-high">high_confidence</span></div>
+        <div class="sig-body">
+          <b>官方立場（official）：</b>初始分發不基於粉絲數，所有影片同一起跑線。<br><br>
+          <b>業界實測推論（practical_inference）：</b>歷史高參與度帳號已建立精準「帳號主題畫像」（Account Authority），種子受眾精準度高於新帳號。<b>硬性限制</b>：30天內超過10次搬運或違規，帳號直接失去推薦資格。
+        </div>
+        <div class="sig-meta">source: ig_creators_breakthrough (official) · Sprout Social (high_confidence, 2026-01-28)</div>
+      </div>
+
+      <div class="do-dont">
+        <div class="do-block">
+          <div class="do-title">✅ 提升 Audience Matching 精準度</div>
+          <div class="do-item">第一影格即有動態或強烈視覺對比</div>
+          <div class="do-item">前三秒螢幕字卡含目標受眾身份關鍵字</div>
+          <div class="do-item">口播前三秒直接指向受眾痛點</div>
+          <div class="do-item">用 Trial Reels 測試新 Hook 對陌生受眾</div>
+          <div class="do-item">腳本設計明確 Send-Worthy Point</div>
+        </div>
+        <div class="dont-block">
+          <div class="dont-title">❌ 破壞 Audience Matching</div>
+          <div class="dont-item">前五秒 Logo 動畫或靜態無動作片頭</div>
+          <div class="dont-item">前三秒文字與影片主題不符（誤導 OCR）</div>
+          <div class="dont-item">帳號主題混亂，30天內切換多個利基</div>
+          <div class="dont-item">影片含他平台浮水印（直接失去推薦資格）</div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <div class="card open">
@@ -1043,6 +1187,17 @@ tr:nth-child(even) td{background:rgba(100,70,40,0.04)}
         <div class="sig-body">Mosseri 指出這是最有價值的互動訊號。設計「值得私訊給朋友」的內容：反常識結論、實用工具清單、強烈情感共鳴點。</div>
         <div class="sig-meta">source: ig_verge_views_sends</div>
       </div>
+
+      <div class="master-case-grid">
+        <div class="master-case-pro">
+          <span class="case-title-label">💡 頂級大師實戰落地案例 (Use Case)</span>
+          <p><b>原創免死金牌調校：</b> 系統若偵測到影片畫面在網路上曾被發布過，會直接啟動原創屏蔽（Originality Mask）。前 3 秒必須包含創作者的「真實原創口播」或「實景環境」，禁止使用完全由 AI 生成的無版權罐頭畫面。影片中段必須設計 <b>Send-Worthy Point</b>，例如將關鍵知識整理成一張「高對比字體圖表」，並在腳本中明講：<code>"這張對比表太重要了，建議直接轉發給你的團隊經營夥伴"</code>，以此強制拉高分享訊號。</p>
+        </div>
+        <div class="master-case-junior">
+          <span class="case-title-label">👦 國中生白話翻譯模式</span>
+          <p><b>抄襲者的終極末日：</b> 以前你去抖音下載別人的爆款影片，剪掉水印傳到 IG 還能騙流量。現在不行了！IG 的 AI 只要發現這影片別人傳過，它不但不給流量，最恐怖的是：如果陌生人剛好刷到你的搬運片，AI 會在最後一秒把你的影片抽走，換成「原作者」的影片塞給他！你辛苦半天，流量全免費送給對手。所以，片子裡一定要有你自己的臉、自己的聲音或獨家觀點！</p>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -1059,11 +1214,11 @@ tr:nth-child(even) td{background:rgba(100,70,40,0.04)}
       <div class="tbl-wrap mt8">
         <table>
           <tr><th>帳號類型</th><th>2025/12 更新後觸及變化</th></tr>
-          <tr><td>搬運帳號（Aggregator）</td><td style="color:var(--accent)">-60% 到 -80%</td></tr>
-          <tr><td>原創創作者</td><td style="color:var(--green)">+40% 到 +60%</td></tr>
+          <tr><td>搬運帳號（Aggregator）</td><td style="color:var(--accent)">推薦觸及可能顯著下降（實際幅度需帳號實測校準）</td></tr>
+          <tr><td>原創創作者</td><td style="color:var(--green)">相對取得更多推薦機會（實際幅度需帳號實測校準）</td></tr>
         </table>
       </div>
-      <div class="sig-meta mt8">source: ig_aggregator_penalty_2025 (Sprout Social 引用 IG 官方行為)</div>
+      <div class="sig-meta mt8">source: ig_aggregator_penalty_2025</div>
     </div>
   </div>
 
@@ -1088,7 +1243,7 @@ tr:nth-child(even) td{background:rgba(100,70,40,0.04)}
           <div class="dont-title">❌ 舊做法（已過時）</div>
           <div class="dont-item">堆砌 20-30 個 hashtag</div>
           <div class="dont-item">依賴 hashtag 作為主要發現工具</div>
-          <div class="dont-item">Caption 只寫 emoji 或短句</div>
+          <div class="dont-item">Caption 只寫 emoji 或 short 句</div>
         </div>
       </div>
       <div class="sig-meta mt8">source: ig_keyword_discovery_2025</div>
@@ -1107,7 +1262,7 @@ tr:nth-child(even) td{background:rgba(100,70,40,0.04)}
         用戶可以查看並移除你的帳號。主題不一致 = 分發懲罰。<br>
         若要測試新主題，使用 Trial Reels 功能（只推給非粉絲，不影響現有粉絲）。
       </div>
-      <div class="sig-meta mt8">source: ig_your_algorithm_2025 (Net Influencer 引用 IG 官方聲明)</div>
+      <div class="sig-meta mt8">source: ig_your_algorithm_2025</div>
     </div>
   </div>
 
@@ -1125,28 +1280,46 @@ tr:nth-child(even) td{background:rgba(100,70,40,0.04)}
       <p style="font-size:13px;margin-top:8px">替代方案：→ Keyword-based Discovery（見上方）</p>
     </div>
   </div>
+
 </div>
 
-<!-- ══════════════════════════════════════
-     PAGE: FACEBOOK
-══════════════════════════════════════ -->
 <div class="page" id="page-fb">
-  <div class="page-title">💙 Facebook 演算法訊號</div>
-  <div class="page-sub">Facebook 有多個獨立 AI 系統：Feed · Reels · Video · Feed Recommendations</div>
+  <div class="page-title">💙 Facebook 粉絲專頁場景分流</div>
+  <div class="page-sub">Facebook 三大獨立 AI 排序系統、MSI 機制與變現承接</div>
 
   <div class="card open">
     <div class="card-head" onclick="toggleCard(this)">
-      <h3>UTIS｜User True Interest Survey</h3>
+      <h3>粉專三大獨立 AI 系統對比矩陣</h3>
       <span class="card-toggle">▼</span>
     </div>
     <div class="card-body">
-      <div class="row mb8"><span class="badge-official">official</span></div>
-      <div class="sig-body">
-        Facebook Reels 使用 UTIS 模型預測用戶的「真實興趣」，校正表面互動行為。<br><br>
-        <b>創作者能控制的：</b>內容是否切中利基痛點、前1-3秒是否明確標示受眾、內容是否屬於利基高品質。<br>
-        <b>創作者無法控制的：</b>系統側的機器學習判斷、個別用戶的歷史行為。
+      <div class="tbl-wrap">
+        <table>
+          <thead>
+            <tr><th>粉專版位</th><th>對應 AI 底層排序系統</th><th>核心分發邏輯與加權指標</th><th>Claim Level</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><b>Page Feed Post</b></td>
+              <td>Facebook Feed AI system</td>
+              <td>受 Personalized ranking 個人化排序與 **MSI 有意義社交互動** 影響。</td>
+              <td><span class="badge-official">official</span></td>
+            </tr>
+            <tr>
+              <td><b>Page Reels</b></td>
+              <td>Facebook Reels AI system</td>
+              <td>透過 **UTIS模型真實興趣調查** 校正傳統行為指標，聚焦利基高品質內容。</td>
+              <td><span class="badge-official">official</span></td>
+            </tr>
+            <tr>
+              <td><b>Page Video / Video Tab</b></td>
+              <td>Facebook Video AI system</td>
+              <td>面向主動看影片情境，考核 **平均觀看時長（AVD）** 與結構化內容留存。</td>
+              <td><span class="badge-official">official</span></td>
+            </tr>
+          </tbody>
+        </table>
       </div>
-      <div class="sig-meta mt8">source: fb_engineering_utis (Meta Engineering Blog)</div>
     </div>
   </div>
 
@@ -1158,7 +1331,7 @@ tr:nth-child(even) td{background:rgba(100,70,40,0.04)}
     <div class="card-body">
       <div class="row mb8"><span class="badge-official">official</span></div>
       <div class="sig-body">
-        Facebook Feed 重視人與人之間有意義的互動：有實質內容的留言、附個人評語的分享、來回討論。<br><br>
+        Facebook Feed 重視人與人之間有意義的互動：有實質內容的留言、附個人評語的分享、來回討論（back-and-forth discussion）。<br><br>
         <b>設計方法：</b>結尾提出具體開放式問題，連結真實生活情境。主動回覆第一波留言，帶動多輪對話。
       </div>
       <div class="do-dont mt8">
@@ -1200,29 +1373,62 @@ tr:nth-child(even) td{background:rgba(100,70,40,0.04)}
 
   <div class="card">
     <div class="card-head" onclick="toggleCard(this)">
-      <h3>變現承接｜Groups · Messenger · Live</h3>
+      <h3>UTIS 真實興趣模型與前三秒設計 Checklist</h3>
       <span class="card-toggle">▼</span>
     </div>
     <div class="card-body">
-      <div class="callout callout-gold">
-        <b>重要：這些是變現漏斗承接工具，不是官方推播訊號。</b><br>
-        不可說「加入社團就能提升推播」「引導私訊能讓系統幫你加權」。
-      </div>
-      <div class="sig-body mt8">
-        Groups = 信任深化場景（不是固定加權）<br>
-        Messenger = 高意向轉換入口（不是演算法訊號）<br>
-        Live = 即時收益 + 信任建立（不是推播保證）
+      <div class="tier-block tier-1">
+        <div class="tier-label">🎯 粉專 Reels 前三秒 True-Interest-Fit 設計檢查表</div>
+        <div class="check-item" onclick="toggle(this)">
+          <div class="check-box">✓</div>
+          <div>
+            <div class="check-text">【利基受眾精確點名】前 1.5 秒內完成受眾限定（例如：『台灣電商老闆請聽好』），絕不使用大眾化模糊開場。</div>
+            <div class="check-meta">佐證：fb_engineering_utis</div>
+          </div>
+        </div>
+        <div class="check-item" onclick="toggle(this)">
+          <div class="check-box">✓</div>
+          <div>
+            <div class="check-text">【痛點與利潤前置】前 3 秒內直接交付核心價值或指出痛苦現況（例如：『你天天在留言區回覆留言+1，其實粉專已經被默默限流了』），同步完成 Interest Matching。</div>
+            <div class="check-meta">佐證：fb_engineering_utis</div>
+          </div>
+        </div>
+        <div class="check-item" onclick="toggle(this)">
+          <div class="check-box">✓</div>
+          <div>
+            <div class="check-text">【排除好奇陷阱】不使用與核心變現產品無關的驚悚、擦邊、或獵奇畫面作為開頭，防止 UTIS 隨機抽查問卷被用戶勾選「不感興趣」。</div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
+
+  <div class="card">
+    <div class="card-head" onclick="toggleCard(this)">
+      <h3>變現承接管道與工具正確定位（非推播權重）</h3>
+      <span class="card-toggle">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="row mb8"><span class="badge-inf">practical_inference</span></div>
+      <div class="callout callout-gold">
+        <b>重要：以下是變現漏斗承接工具，不是官方推播訊號。不可宣稱其具備自然流加權公式。</b>
+      </div>
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>承接工具</th><th>實務變現定位 (Creator Role)</th><th>不可過度宣稱邊界 (Claim Guard)</th></tr>
+          <tr><td><b>Groups 社團</b></td><td>信任承接與擴散場景，適合提供高價值經驗分享。</td><td>不可寫成官方 Feed 演算法的固定推播分發加權公式。</td></tr>
+          <tr><td><b>Messenger 私訊</b></td><td>高意向轉化入口，用於一對一閉環收單、線索沈澱。</td><td>不可寫成能讓 AI 自動擴散 Reels 的官方 ranking factor。</td></tr>
+          <tr><td><b>Live 直播</b></td><td>信任深化與即時成交場景，配合 Reels 進行直播預熱。</td><td>不可寫成能提升整體粉專自然流量的分發權重指標。</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
 </div>
 
-<!-- ══════════════════════════════════════
-     PAGE: CROSS
-══════════════════════════════════════ -->
 <div class="page" id="page-cross">
   <div class="page-title">🔁 跨平台共通原則</div>
-  <div class="page-sub">無論演算法怎麼變，這些原則永遠成立</div>
+  <div class="page-sub">不論平台代碼如何更迭，永遠成立的五大底層邏輯</div>
 
   <div class="card open">
     <div class="card-head" onclick="toggleCard(this)">
@@ -1230,53 +1436,49 @@ tr:nth-child(even) td{background:rgba(100,70,40,0.04)}
       <span class="card-toggle">▼</span>
     </div>
     <div class="card-body">
-      <div class="sig">
-        <div class="sig-head"><b>1. Satisfaction 優先</b><span class="badge-official">official</span></div>
-        <div class="sig-body">三平台都直接或間接測量觀眾的真實滿意度。讓觀眾真的有收穫比讓觀眾繼續看更重要。</div>
+      <div class="sig mt12">
+        <div class="sig-head"><b>1. Satisfaction 滿意度優先校正</b><span class="badge-official">official</span></div>
+        <div class="sig-body">三大平台均導入了直接或間接測量觀眾真實感受的機制（如 YT Survey, FB UTIS）。讓觀眾「看完後有實質收穫」的滿意度權重，已超越單純的好奇點擊與停留。</div>
       </div>
       <div class="sig">
-        <div class="sig-head"><b>2. Originality 是入場券</b><span class="badge-official">official</span></div>
-        <div class="sig-body">三平台對原創性的要求只會越來越嚴。搬運內容的推薦窗口在系統性關閉。</div>
+        <div class="sig-head"><b>2. Originality 是分發的絕對門檻</b><span class="badge-official">official</span></div>
+        <div class="sig-body">系統對原創性的審計已進入「原作者取代搬運者」的重罰時代。未經實質創作者投入與編輯判斷的搬運或純 AI 模板內容，分發窗口正在系統性關閉。</div>
       </div>
       <div class="sig">
-        <div class="sig-head"><b>3. 演算法不評估內容，評估行為訊號</b><span class="badge-official">official</span></div>
-        <div class="sig-body">系統不看影片說了什麼，只看觀眾如何反應。高品質內容 ≠ 自動推播，高互動內容 = 自動推播。</div>
+        <div class="sig-head"><b>3. 演算法不評估內容好壞，只評估人類行為訊號</b><span class="badge-official">official</span></div>
+        <div class="sig-body">AI 排序系統無法主觀感知藝術價值。能驅動特定目標受眾精準產生正向行為訊號（如 Sends, AVD, Replies）的內容 = 自動推播。</div>
       </div>
       <div class="sig">
-        <div class="sig-head"><b>4. 流量與變現是兩件事</b><span class="badge-inf">practical_inference</span></div>
-        <div class="sig-body">承接工具（Messenger、Groups、DM）是變現漏斗，不是推播訊號。千萬曝光不等於一單轉換。</div>
+        <div class="sig-head"><b>4. 流量池與變現漏斗是兩套完全獨立的系統</b><span class="badge-inf">practical_inference</span></div>
+        <div class="sig-body">商業承接工具（Messenger, DM, LINE）屬於創作者手動設計的變現私域。千萬公域播放量不等於一單轉換，變現專家追求的是精準受眾的轉化閉環。</div>
       </div>
       <div class="sig">
-        <div class="sig-head"><b>5. 主題一致性是護城河</b><span class="badge-high">high_confidence</span></div>
-        <div class="sig-body">三平台都用歷史行為預測受眾興趣。頻道定位清晰，系統才知道把你推給誰。</div>
+        <div class="sig-head"><b>5. 主題一致性（Niche Locking）是長期護城河</b><span class="badge-high">high_confidence</span></div>
+        <div class="sig-body">AI 依靠帳號歷史行為進行受眾畫像預測（如 IG Your Algorithm 9-12篇）。定位越聚焦、主題越垂直，AI 的匹配效率與分發就越精準。</div>
       </div>
     </div>
   </div>
 
   <div class="card">
     <div class="card-head" onclick="toggleCard(this)">
-      <h3>Paid vs Organic 必須分開</h3>
+      <h3>Paid vs Organic 數據分流防呆模組</h3>
       <span class="card-toggle">▼</span>
     </div>
     <div class="card-body">
       <div class="callout callout-warn">
-        <b>廣告互動不等於自然推播成功。</b> 混用兩者會做出完全錯誤的內容決策。
+        <b>付費觸及帶來的互動，絕不等於自然演算法推薦成功。混用數據會導致內容策略徹底崩盤。</b>
       </div>
-      <div class="tbl-wrap mt8">
+      <div class="tbl-wrap">
         <table>
-          <tr><th>指標</th><th>正確記錄方式</th></tr>
-          <tr><td>觸及</td><td>paid_reach 和 organic_reach 分開欄位</td></tr>
-          <tr><td>互動</td><td>廣告帶來的互動不計入自然內容表現</td></tr>
-          <tr><td>評估</td><td>停掉廣告後的自然觸及才是真實內容力</td></tr>
+          <tr><th>指標類型</th><th>正確審計記錄方式</th><th>錯誤決策風險</th></tr>
+          <tr><td>觸及（Reach）</td><td>必須在 <code>v6.5 History</code> 中將 paid_reach 和 organic_reach 拆分獨立欄位。</td><td>誤把廣告買來的觸及當成自然流爆款，導致大量複製無自然推播力的廢片。</td></tr>
+          <tr><td>互動（Interactions）</td><td>廣告帶來的按讚、留言不計入自然內容力考核指標。</td><td>停掉廣告後自然流量依舊低迷，才發現內容本身缺乏自然受眾匹配。</td></tr>
         </table>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ══════════════════════════════════════
-     PAGE: DIAGNOSTIC
-══════════════════════════════════════ -->
 <div class="page" id="page-diag">
   <div class="page-title">🔬 數據診斷</div>
   <div class="page-sub">輸入你的後台數據，系統依據官方文件與研究基準給出診斷</div>
@@ -1285,23 +1487,25 @@ tr:nth-child(even) td{background:rgba(100,70,40,0.04)}
     <b>使用方式：</b>選擇平台，輸入你的後台數據，按「開始診斷」。每個數字旁邊都標注了依據來源。
   </div>
 
+  <div class="callout callout-info" style="margin-bottom:16px">
+    使用方式：選擇平台，輸入你的後台數據，按「開始診斷」。每個數字旁邊都標注了依據來源。
+  </div>
   <div class="diag-tabs">
     <button class="diag-tab active" onclick="switchPlatform('yt',this)">▶ YouTube</button>
     <button class="diag-tab" onclick="switchPlatform('ig',this)">📸 Instagram</button>
     <button class="diag-tab" onclick="switchPlatform('fb',this)">💙 Facebook</button>
   </div>
 
-  <!-- YOUTUBE -->
   <div class="diag-platform active" id="diag-yt">
     <div class="input-grid">
       <div class="input-group">
         <label class="input-label">CTR 點擊率（%）<span class="badge-official">official</span></label>
         <input class="metric-input" id="yt-ctr" type="number" min="0" max="100" step="0.1" placeholder="例如：3.5">
-        <div class="metric-unit">來源：YouTube Help <a href="https://support.google.com/youtube/answer/7628154" target="_blank" style="color:var(--blue)">answer/7628154</a>｜半數頻道落在 2–10%</div>
+        <div class="metric-unit">來源：YouTube Help answer/7628154｜半數頻道落在 2–10%</div>
       </div>
       <div class="input-group">
         <label class="input-label">平均留存率（%）<span class="badge-inf">research</span></label>
-        <input class="metric-input" id="yt-ret" type="number" min="0" max="100" step="0.1" placeholder="例如：28">
+        <input class="metric-input" id="yt-ret" type="number" min="0" max="100" step="0.1" placeholder="example：28">
         <div class="metric-unit">來源：Retention Rabbit 2025（10,000+影片）｜全平台平均 23.7%</div>
       </div>
       <div class="input-group">
@@ -1323,7 +1527,6 @@ tr:nth-child(even) td{background:rgba(100,70,40,0.04)}
     <div class="diag-results" id="yt-results"></div>
   </div>
 
-  <!-- INSTAGRAM -->
   <div class="diag-platform" id="diag-ig">
     <div class="callout callout-info" style="margin-bottom:14px">
       <b>請使用 2026 年新指標：</b>Reach→Viewers、Impressions→Views、Engagement→Interactions。若後台仍顯示舊名稱，對應填入即可。
@@ -1354,7 +1557,6 @@ tr:nth-child(even) td{background:rgba(100,70,40,0.04)}
     <div class="diag-results" id="ig-results"></div>
   </div>
 
-  <!-- FACEBOOK -->
   <div class="diag-platform" id="diag-fb">
     <div class="callout callout-warn" style="margin-bottom:12px">
       <b>注意：</b>Meta Business Suite 的 Insights 概覽只顯示 Organic。若有下廣告請先到 Ads Manager 取得純 Organic 數字，或在下方勾選。
@@ -1400,97 +1602,118 @@ tr:nth-child(even) td{background:rgba(100,70,40,0.04)}
   </div>
 </div>
 
-<!-- ══════════════════════════════════════
-     PAGE: BENCHMARK
-══════════════════════════════════════ -->
 <div class="page" id="page-bench">
   <div class="page-title">📊 數字基準線</div>
-  <div class="page-sub">所有數字均為 practical_inference（第三方研究），非官方數字。台灣市場需以自身 Analytics 校準。</div>
+  <div class="page-sub">實務推論（3rd-party research）完整數據指標與留存率行動指南</div>
 
   <div class="card open">
     <div class="card-head" onclick="toggleCard(this)">
-      <h3>YouTube 留存率 × CTR 基準</h3>
+      <h3>YouTube 留存率四級行動指南與長度策略</h3>
       <span class="card-toggle">▼</span>
     </div>
     <div class="card-body">
       <div class="bench-grid">
-        <div class="bench-card">
-          <div class="bench-label">全平台平均留存率</div>
-          <div class="bench-val">23.7%</div>
-          <div class="bench-sub">你的基準線起點</div>
-        </div>
-        <div class="bench-card">
-          <div class="bench-label">超過 50% 留存的影片</div>
-          <div class="bench-val bench-ok">16.8%</div>
-          <div class="bench-sub">只有六分之一做到</div>
-        </div>
-        <div class="bench-card">
-          <div class="bench-label">教育類最高留存</div>
-          <div class="bench-val bench-good">42.1%</div>
-          <div class="bench-sub">教學型內容天花板</div>
-        </div>
-        <div class="bench-card">
-          <div class="bench-label">5-10分鐘影片</div>
-          <div class="bench-val">31.5%</div>
-          <div class="bench-sub">最容易達到高留存的長度</div>
-        </div>
-        <div class="bench-card">
-          <div class="bench-label">CTR 目標基準</div>
-          <div class="bench-val bench-ok">4-6%</div>
-          <div class="bench-sub">2% 以下需立即調整</div>
-        </div>
-        <div class="bench-card">
-          <div class="bench-label">前15秒說明價值主張</div>
-          <div class="bench-val bench-good">+18%</div>
-          <div class="bench-sub">1分鐘留存率提升</div>
-        </div>
+        <div class="bench-card"><div class="bench-label">全平台平均留存率</div><div class="bench-val">23.7%</div><div class="bench-sub">大盤起點基準</div></div>
+        <div class="bench-card"><div class="bench-label">教育/技能類平均</div><div class="bench-val bench-good">42.1%</div><div class="bench-sub">教學型天花板</div></div>
+        <div class="bench-card"><div class="bench-label">CTR 良好基準線</div><div class="bench-val bench-ok">4-6%</div><div class="bench-sub">低於 2% 必須重做</div></div>
+        <div class="bench-card"><div class="bench-label">5-10分鐘長度平均</div><div class="bench-val">31.5%</div><div class="bench-sub">最佳長度策略</div></div>
       </div>
-      <div class="tbl-wrap mt8">
+
+      <div class="tbl-wrap mt12">
+        <h4>📌 觀看留存率（Retention）四級審計行動指南</h4>
         <table>
-          <tr><th>留存率</th><th>評估</th><th>行動</th></tr>
-          <tr><td style="color:var(--accent)">&lt; 20%</td><td>嚴重問題</td><td>全面檢查腳本節奏和 Hook</td></tr>
-          <tr><td>20-30%</td><td>正常範圍</td><td>持續優化，對照哪些段落掉人</td></tr>
-          <tr><td style="color:var(--blue)">30-50%</td><td>良好</td><td>記錄哪些設計決策有效並複製</td></tr>
-          <tr><td style="color:var(--green)">50%+</td><td>優秀（前16.8%）</td><td>以此風格為頻道基調</td></tr>
+          <thead>
+            <tr><th>留存率區間</th><th>演算法底層診斷</th><th>大師級實戰修正行動 (Creator Action)</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="color:var(--accent); font-weight:700;">&lt; 20%</td>
+              <td><b>嚴重異常狀態</b></td>
+              <td>腳本節奏、Hook 後銜接存在巨大斷層。必須進 Studio 後台查明 Dips（暴跌點），將該廢話段落徹底割除。</td>
+            </tr>
+            <tr>
+              <td style="color:var(--gold); font-weight:700;">20% - 30%</td>
+              <td><b>大盤常態正常範圍</b></td>
+              <td>內容合格，但缺乏爆點。優化中段結構：每隔 30–60 秒必須拋出全新資訊點或實戰圖表案例，維持停留。</td>
+            </tr>
+            <tr>
+              <td style="color:var(--blue); font-weight:700;">30% - 50%</td>
+              <td><b>健康高效分發區間</b></td>
+              <td>內容交付力優良。完整封存此腳本的資訊密度、口播語氣，並作為後續系列影片的核心模板複製。</td>
+            </tr>
+            <tr>
+              <td style="color:var(--green); font-weight:700;">50%+</td>
+              <td><b>頂級爆款（前16.8%）</b></td>
+              <td>觸發極致受眾匹配。演算法會將其列為長青內容（Evergreen Content），應立即將其作為私域導流的主要錨點。</td>
+            </tr>
+          </tbody>
         </table>
       </div>
-      <div class="sig-meta mt8">source: retention_rabbit_2025 · lenos_ctr_benchmark_2025（均為 practical_inference）</div>
+      <div style="font-size:11px; color:var(--text3); margin-top:12px; line-height:1.6; background:var(--bg3); padding:10px; border-radius:var(--radius2);">
+        <b>數據來源標注：</b><br>
+        - 留存率數據：retention_rabbit_2025（10,000+ 影片樣本，practical_inference）<br>
+        - CTR 基準：lenos_ctr_benchmark_2025（practical_inference）<br>
+        - CPM / RPM：miraflow_cpm_rpm_2026（practical_inference）<br>
+        - 所有 Benchmark 以英語市場為主，繁中市場請以自身 YouTube Analytics 為準。
+      </div>
     </div>
   </div>
 
   <div class="card">
     <div class="card-head" onclick="toggleCard(this)">
-      <h3>YouTube CPM / RPM 各領域基準（英語市場）</h3>
+      <h3>YouTube CPM / RPM 商業變現基準（英語大盤參考）</h3>
       <span class="card-toggle">▼</span>
     </div>
     <div class="card-body">
-      <div class="callout callout-warn mb8">
-        <b>台灣繁中創作者注意：</b>以下為英語市場數字，台灣實際 CPM 大幅低於此。請以自身 YouTube Analytics 為準。
+      <div class="callout callout-warn">
+        <b>注意：繁中市場實際廣告 CPM 顯著低於英語市場。本表用於教材建立「領域變現價值」的對比概念。</b>
       </div>
       <div class="tbl-wrap">
         <table>
-          <tr><th>內容領域</th><th>CPM 範圍（USD）</th><th>創作者 RPM（×55%）</th></tr>
-          <tr><td>財經 / 個人理財</td><td style="color:var(--green)">$25–$65</td><td>$14–$36</td></tr>
-          <tr><td>保險 / 法律</td><td>$12–$38</td><td>$7–$21</td></tr>
-          <tr><td>教育 / 商業技能</td><td>$12–$30</td><td>$7–$17</td></tr>
-          <tr><td>科技評測</td><td>$8–$25</td><td>$4–$14</td></tr>
-          <tr><td>旅遊</td><td>$6–$20</td><td>$3–$11</td></tr>
-          <tr><td>娛樂</td><td>$2–$8</td><td>$1–$4</td></tr>
-          <tr><td>遊戲</td><td style="color:var(--accent)">$2–$5</td><td>$1–$3</td></tr>
+          <thead>
+            <tr><th>利基內容領域 (Niche Category)</th><th>CPM 範圍 (USD)</th><th>創作者 RPM 實得估算 (55% 分潤)</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="color:var(--green); font-weight:700;">財經 / 個人理財 / 變現</td>
+              <td>$25.00 – $65.00</td>
+              <td>$13.75 – $35.75</td>
+            </tr>
+            <tr>
+              <td>保險 / 法律顧問</td>
+              <td>$12.00 – $38.00</td>
+              <td>$6.60 – $20.90</td>
+            </tr>
+            <tr>
+              <td>教育 / 商業技能培訓</td>
+              <td>$12.00 – $30.00</td>
+              <td>$6.60 – $16.50</td>
+            </tr>
+            <tr>
+              <td>科技評測 / 數碼開箱</td>
+              <td>$8.00 – $25.00</td>
+              <td>$4.40 – $13.75</td>
+            </tr>
+            <tr>
+              <td style="color:var(--accent);">遊戲 / 純娛樂生活</td>
+              <td>$2.00 – $5.00</td>
+              <td>$1.10 – $2.75</td>
+            </tr>
+          </tbody>
         </table>
       </div>
-      <div class="callout callout-info mt8">
-        <b>分潤規則（official）：</b>標準廣告創作者拿 55%，YouTube 拿 45%。Shorts 廣告創作者拿 45%，YouTube 拿 55%。<br>
-        <b>季節性：</b>Q4 最高（$18-$30+），Q1 最低（$8-$15），Q3 夏季低谷。
+      <div style="font-size:12px; line-height:1.65; background:var(--bg); border:1px solid var(--border2); padding:12px; border-radius:var(--radius2); margin-top:10px;">
+        <span style="font-weight:700; color:var(--gold);">📅 CPM 季節性波動規規（practical_inference）</span><br>
+        <b>Q4（10–12月）：</b>全年最高，廣告主年末預算衝量，CPM 可達全年峰值（+40~60%）<br>
+        <b>Q1（1–3月）：</b>全年最低，廣告主預算重置，CPM 回落（財經類影響最明顯）<br>
+        <b>Q3（7–9月）：</b>夏季低谷，娛樂與教育類受影響最大<br>
+        <b>建議策略：</b>在 Q4 集中發布變現類、財經類、教育類高 CPM 主題影片，最大化 RPM 收益。<br><br>
+        <i>注意：以上為英語市場觀測規律，台灣繁中市場請以自身 Analytics 季度數據校準。</i>
       </div>
-      <div class="sig-meta mt8">source: miraflow_cpm_rpm_2026（practical_inference）</div>
     </div>
   </div>
 </div>
 
-<!-- ══════════════════════════════════════
-     PAGE: MYTHS
-══════════════════════════════════════ -->
 <div class="page" id="page-myths">
   <div class="page-title">💡 常見迷思破解</div>
   <div class="page-sub">❌ 錯誤認知 → ✅ 正確說法 + 為什麼容易誤解</div>
@@ -1503,7 +1726,7 @@ tr:nth-child(even) td{background:rgba(100,70,40,0.04)}
     <div class="card-body">
       <div class="myth">
         <div class="myth-wrong">❌ 點擊率極高就一定被瘋狂推薦</div>
-        <div class="myth-right">✅ 高 CTR 必須搭配高 Retention 和 Satisfaction，否則被系統視為 Clickbait 並懲罰</div>
+        <div class="myth-right">✅ 高 CTR 必須搭配高 Retention 和 Satisfaction，否則可能形成承諾不兌現訊號並降低後續分發（practical_inference；YouTube 官方不使用 Clickbait 一詞）</div>
         <div class="myth-why">⚠ 忽略漏斗後端驗證，導致標題黨讓觀眾點進來馬上離開，傷害頻道長期權重</div>
         <div class="myth-src">source: yt_blog_recommendation_system</div>
       </div>
@@ -1529,16 +1752,16 @@ tr:nth-child(even) td{background:rgba(100,70,40,0.04)}
     </div>
     <div class="card-body">
       <div class="myth">
-        <div class="myth-wrong">❌ 塞滿 hashtag 就能獲得高曝光 <span class="badge-dep">DEPRECATED</span></div>
+        <div class="myth-wrong">❌ 塞滿 hashtag 就能獲得高曝光</div>
         <div class="myth-right">✅ Hashtag 已棄用降級，Caption 關鍵詞才是現在的 SEO</div>
         <div class="myth-why">⚠ 花大量時間複製貼上 30 個標籤，卻忽略 Caption 的搜尋價值</div>
-        <div class="myth-src">source: ig_keyword_discovery_2025（v1.1 新增）</div>
+        <div class="myth-src">source: ig_keyword_discovery_2025</div>
       </div>
       <div class="myth">
         <div class="myth-wrong">❌ 消掉浮水印搬運 TikTok 就沒問題</div>
-        <div class="myth-right">✅ Aggregator Penalty 讓搬運帳號觸及 -60-80%，且被原創者取代</div>
+        <div class="myth-right">✅ Aggregator Penalty 啟動後，搬運帳號推薦觸及可能顯著下降，且被原創者取代（high_confidence；具體幅度需帳號實測）</div>
         <div class="myth-why">⚠ 誤以為只要騙過影像辨識就能享有免費流量</div>
-        <div class="myth-src">source: ig_aggregator_penalty_2025（v1.1 新增）</div>
+        <div class="myth-src">source: ig_aggregator_penalty_2025</div>
       </div>
       <div class="myth">
         <div class="myth-wrong">❌ Instagram 只有一個演算法</div>
@@ -1565,27 +1788,24 @@ tr:nth-child(even) td{background:rgba(100,70,40,0.04)}
         <div class="myth-wrong">❌ 社團分享有「3倍固定加權公式」</div>
         <div class="myth-right">✅ 社團只是信任場景，無官方固定推播加權公式</div>
         <div class="myth-why">⚠ 誤把受眾精準度帶來的轉換優勢當成演算法的程式碼設定</div>
-        <div class="myth-src">source: 無直接官方來源（unsupported）</div>
+        <div class="myth-src">source: unsupported</div>
       </div>
       <div class="myth">
         <div class="myth-wrong">❌ 投廣告會提升自然推薦流</div>
         <div class="myth-right">✅ 付費觸及與自然觸及必須分開。廣告互動不等於自然演算法加權</div>
         <div class="myth-why">⚠ 停廣告後自然流量依舊低迷，才發現內容本身根本沒有自然推播力</div>
-        <div class="myth-src">source: unsupported（業界共識）</div>
+        <div class="myth-src">source: unsupported</div>
       </div>
       <div class="myth">
         <div class="myth-wrong">❌ 粉專發文粉絲就一定會看到</div>
         <div class="myth-right">✅ Facebook Feed 使用機器學習個人化排序，只推送系統認為有價值的內容</div>
         <div class="myth-why">⚠ 停留在「萬粉等於萬曝光」的舊時代思維</div>
-        <div class="myth-src">source: fb_feed_ranking_content · meta_ranking_overview</div>
+        <div class="myth-src">source: fb_ranking_content · meta_ranking_overview</div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ══════════════════════════════════════
-     PAGE: TOOLS
-══════════════════════════════════════ -->
 <div class="page" id="page-tools">
   <div class="page-title">🧩 Screenwriter / v6.5 對接規格</div>
   <div class="page-sub">工具化規則：Screenwriter 負責策略與審計；v6.5 僅負責生成執行、metadata 顯示與 History Tracking</div>
@@ -1685,12 +1905,25 @@ tr:nth-child(even) td{background:rgba(100,70,40,0.04)}
   </div>
 </div>
 
-<!-- ══════════════════════════════════════
-     PAGE: ABOUT
-══════════════════════════════════════ -->
 <div class="page" id="page-about">
   <div class="page-title">📋 版本紀錄</div>
   <div class="page-sub">資料來源與更新歷程</div>
+
+  <div class="card open">
+    <div class="card-head" onclick="toggleCard(this)">
+      <h3>v2.1 終極整合版（2026-05-25）</h3>
+      <span class="card-toggle">▼</span>
+    </div>
+    <div class="card-body">
+      <p style="font-size:13px;line-height:1.7;margin-bottom:8px">核心升級：</p>
+      <ul style="font-size:12px;line-height:1.8;margin-left:16px">
+        <li>修復 v2.0 雙重 HTML 結構 bug（duplicate page IDs 導致用戶實際看到舊版 v1.2 內容）</li>
+        <li>整合 Manus IG Audience Matching 深度研究：三階段受眾測試機制、前三秒四層設計指南、1.7秒決策時間、3秒留存率 60%+ 基準</li>
+        <li>修正 YouTube Shorts 診斷：明確區分 Views vs Engaged Views（How Many Chose to View）</li>
+        <li>完整保留所有版本積累的 61 項核心內容</li>
+      </ul>
+    </div>
+  </div>
 
   <div class="card open">
     <div class="card-head" onclick="toggleCard(this)">
@@ -1736,6 +1969,13 @@ tr:nth-child(even) td{background:rgba(100,70,40,0.04)}
       <div class="sig">
         <div class="sig-head"><span class="badge-dep">DEPRECATED</span></div>
         <div class="sig-body">已確認過時或平台已移除的功能或說法，不應繼續引用。</div>
+      <div class="tbl-wrap"><table style="margin-top:12px;font-size:12px">
+  <tr><th>Gate</th><th>檢查內容</th><th>不得寫成</th></tr>
+  <tr><td>版權素材 / 音樂 / 影片片段授權</td><td>使用前確認授權狀態</td><td>只要標來源就一定安全</td></tr>
+  <tr><td>真實性</td><td>標題、縮圖、內容是否一致</td><td>標題越誇張越容易被推</td></tr>
+  <tr><td>互動完整性</td><td>是否買粉、刷量、互刷、垃圾評論</td><td>互動越多越好，不管來源</td></tr>
+  <tr><td>安全準則</td><td>仇恨、暴力、危險、低俗、敏感煽動</td><td>擦邊越刺激越容易爆</td></tr>
+</table></div>
       </div>
     </div>
   </div>
@@ -1749,7 +1989,7 @@ tr:nth-child(even) td{background:rgba(100,70,40,0.04)}
       <div class="callout callout-info">
         以下缺口目前無可靠公開數字，需要帳號 A/B 實測或創作者社群調查才能填補：
       </div>
-      <ul style="font-size:13px;margin:10px 0 0 16px;line-height:2">
+      <ul style="font-size:13px;margin-top:10px;margin-left:16px;line-height:2">
         <li>IG / YT Engagement Bait 的實際限流幅度（需實測）</li>
         <li>跨平台搬運的留存率折損實際數字（需實測）</li>
         <li>台灣繁中市場 CPM / RPM 實際數字（需 Analytics 數據）</li>
@@ -1759,10 +1999,13 @@ tr:nth-child(even) td{background:rgba(100,70,40,0.04)}
     </div>
   </div>
 </div>
-<section class="page" id="safety">
+
+
+
+<section class="page" id="page-safety">
 <div class="page-title">🛡 Safety Gate｜推薦前安全過濾層</div>
 <div class="page-sub">Platform Safety Layer｜平台紅線與內容安全守門</div>
-<div class="card open safety-card"><div class="card-head"><h3>Algorithm Safety Gate｜推薦前安全過濾層</h3><span class="card-toggle">⌄</span></div><div class="card-body">
+<div class="card open safety-card"><div class="card-head"><h3>Algorithm Safety Gate｜推薦前安全過濾層</h3><span class="card-toggle">▼</span></div><div class="card-body">
 <div class="callout callout-warn"><b>AK 寫法：</b>演算法不是只看 CTR、Retention、互動。內容若先踩到版權、誤導、虛假互動或社群安全邊界，可能在推薦前就被限制、移除或觸發帳號風險。</div>
 <div class="tbl-wrap"><table><thead><tr><th>Gate</th><th>檢查內容</th><th>不得寫成</th></tr></thead><tbody>
 <tr><td>版權</td><td>素材 / 音樂 / 影片片段授權</td><td>只要標來源就一定安全</td></tr>
@@ -1771,10 +2014,64 @@ tr:nth-child(even) td{background:rgba(100,70,40,0.04)}
 <tr><td>安全準則</td><td>仇恨、暴力、危險、低俗、敏感煽動</td><td>擦邊越刺激越容易爆</td></tr>
 </tbody></table></div></div></div>
 </section>
+
+<section class="page" id="page-credibility">
+  <div class="page-title">🔖 可信度分級說明｜Claim Level 定義</div>
+  <div class="page-sub">手冊信任基礎：明確區分官方代碼與實務觀察邊界</div>
+  
+  <div class="card open">
+    <div class="card-body" style="padding-top: 16px;">
+      <p style="font-size:13px; line-height:1.65; margin-bottom:14px; color:var(--text2);">
+        本手冊所有資訊均依照以下四個可信度等級標注來源，使用前請先確認標注等級：
+      </p>
+      
+      <div class="sig">
+        <div class="sig-head"><span class="badge-official">official（官方）</span></div>
+        <div class="sig-body">
+          <b>來源依據：</b>平台官方開發者文件、官方幫助中心 Help Center、官方工程技術部落格、官方透明中心文檔。<br>
+          <b>使用規範：</b>底層代碼級鐵證，可直接作為教材核心引用，引用時請標明「官方文件指出」。
+        </div>
+      </div>
+      
+      <div class="sig">
+        <div class="sig-head"><span class="badge-high">high_confidence（高可信）</span></div>
+        <div class="sig-body">
+          <b>來源依據：</b>平台負責人（如 Mosseri）公開發言訪談、可信媒體直接引述內部說法、業界具備高度一致性的黑箱 A/B 測試實務觀測。<br>
+          <b>使用規範：</b>高機率屬於系統現行加權方向，可用於內容實務決策，引用時需標注「非官方文件，屬高可信觀察」。
+        </div>
+      </div>
+      
+      <div class="sig">
+        <div class="sig-head"><span class="badge-inf">practical_inference（實務推論）</span></div>
+        <div class="sig-body">
+          <b>來源依據：</b>第三方獨立研究機構統計、創作者社群常態實測樣本、結合台灣本土商務變現漏斗之實務推論數字。<br>
+          <b>使用規範：</b>可用於公域拉新後之「私域變現承接」策略建議，絕對不可寫成官方核心推播加權權重，需標注「實務推論」。
+        </div>
+      </div>
+      
+      <div class="sig">
+        <div class="sig-head"><span class="badge-dep">DEPRECATED（已棄用）</span></div>
+        <div class="sig-body">
+          <b>定義說明：</b>已被證實完全過時、平台底層代碼已重構移除、或官方已公開否認的行銷謠言與功能。<br>
+          <b>使用規範：</b>禁止繼續作為經營方針，應於腳本生產線上游主動攔截並修正舊有認知。
+        </div>
+      </div>
+      
+      <div class="callout callout-warn mt12">
+        <b>⚠ 特別提醒（Claim Guard）：</b><br>
+        凡涉及以下行銷噱頭宣稱，無論任何坊間來源，在系統審計中均屬 <b>unsupported（無官方支撐迷思）</b>，嚴禁寫入規格：<br>
+        ・「保證推播 / 保證入流 / 一定會爆流量」<br>
+        ・「DM 私訊 / LINE 導流是官方推薦排序的 ranking factor」<br>
+        ・「社團分享或轉發到好友群組有固定倍數的加權公式」
+      </div>
+    </div>
+  </div>
+</section>
+
 </main>
-</div>
 
 <script>
+
 // ── DIAGNOSTIC MODULE ──
 
 function switchPlatform(p, btn) {
@@ -1812,7 +2109,7 @@ function quadrantBox(ctr, ret) {
   const hiRet = ret >= 30;
   const cells = [
     { cls: 'q-best', title: '最佳狀態', desc: 'CTR 高 × 留存高', active: hiCTR && hiRet },
-    { cls: 'q-click', title: '⚠️ Clickbait 風險', desc: 'CTR 高 × 留存低', active: hiCTR && !hiRet },
+    { cls: 'q-click', title: '⚠️ 承諾不兌現風險', desc: 'CTR 高 × 留存低', active: hiCTR && !hiRet },
     { cls: 'q-pack', title: '包裝需優化', desc: 'CTR 低 × 留存高', active: !hiCTR && hiRet },
     { cls: 'q-both', title: '雙重問題', desc: 'CTR 低 × 留存低', active: !hiCTR && !hiRet },
   ];
@@ -1827,7 +2124,7 @@ function quadrantBox(ctr, ret) {
           </div>`).join('')}
       </div>
       <div style="font-size:11px;color:var(--text3);margin-top:10px">
-        依據：YouTube Help answer/7628154（official）—— CTR 與留存必須一起判讀，高 CTR + 低留存是 Clickbait 的演算法訊號。
+        依據：YouTube Help answer/7628154（official）—— CTR 與留存必須一起判讀；高 CTR + 低留存可視為承諾不兌現風險的實務診斷，不是官方固定懲罰公式。
       </div>
     </div>`;
 }
@@ -1880,10 +2177,10 @@ function diagnoseYT() {
       ctrFix = null;
     } else if (ctr < 9) {
       ctrLevel = 'ok';
-      ctrVerdict = '良好，高於目標基準——確認留存率同樣良好，避免 Clickbait 訊號';
+      ctrVerdict = '良好，高於目標基準——確認留存率同樣良好，避免承諾不兌現訊號';
     } else {
       ctrLevel = 'ok';
-      ctrVerdict = '優秀（前段水準）——重點確認留存率是否同樣高，否則有 Clickbait 風險';
+      ctrVerdict = '優秀（前段水準）——重點確認留存率是否同樣高，否則有承諾不兌現風險';
     }
     html += metricCard('CTR 點擊率', ctr.toFixed(1), '%', ctrLevel, ctrVerdict,
       '業界基準：2–10%（YouTube 官方）｜目標：4–6%（Lenos Tube 研究）｜<a href="https://support.google.com/youtube/answer/7628154" target="_blank">查閱官方文件</a>',
@@ -1920,7 +2217,7 @@ function diagnoseYT() {
     html += quadrantBox(ctr, ret);
     const hiCTR = ctr >= 4, hiRet = ret >= 30;
     if (hiCTR && !hiRet) {
-      fixes.unshift('⚠️ 高CTR+低留存 = Clickbait 訊號：確認標題承諾在影片前30秒有開始兌現');
+      fixes.unshift('⚠️ 高CTR+低留存 = 承諾不兌現風險：確認標題承諾在影片前30秒有開始兌現（practical_inference）');
     } else if (!hiCTR && hiRet) {
       fixes.unshift('內容有價值但包裝弱：優先優化標題和縮圖，不要動腳本內容');
     } else if (!hiCTR && !hiRet) {
@@ -1963,7 +2260,7 @@ function diagnoseIG() {
     const replayLevel = replayRatio > 20 ? 'ok' : replayRatio > 5 ? 'warn' : 'info';
     html += metricCard('重播率（Views/Viewers - 1）', replayRatio, '%', replayLevel,
       replayRatio > 20 ? '重播率高，內容有留下來重看的價值' : replayRatio > 5 ? '有部分重播，可持續優化內容密度' : '重播率偏低，內容可能看一次就夠了',
-      'Views 通常大於 Viewers（2026新指標）｜差值代表重複觀看次數（meta_2026_reporting_changes）', null);
+      'Views 通常大於 Viewers（2026新指標）｜差值代表重複觀看次數', null);
   }
 
   if (viewers && interactions) {
@@ -1986,7 +2283,7 @@ function diagnoseIG() {
       intVerdict = '互動率優秀（>6%），內容有強烈共鳴';
     }
     html += metricCard('Interactions 互動率（/Viewers）', intRate, '%', intLevel, intVerdict,
-      '2026新指標：Interactions 只計算主動意願行為（按讚、留言、分享、收藏），比舊 Engagement 更嚴格（meta_2026_reporting_changes）', intFix);
+      '2026新指標：Interactions 只計算主動意願行為（按讚、留言、分享、收藏），比舊 Engagement 更嚴格', intFix);
   }
 
   if (viewers && sends) {
@@ -1997,7 +2294,7 @@ function diagnoseIG() {
     let sendFix = sendRate < 0.5 ? '設計一個「值得私訊給特定朋友」的內容點，例如：反常識結論、實用工具、強烈情感共鳴。' : null;
     if (sendRate < 0.5) fixes.push('加入一個「值得傳給朋友」的具體內容點：反常識結論或實用工具清單');
     html += metricCard('Sends 私訊分享率（/Viewers）', sendRate, '%', sendLevel, sendVerdict,
-      'Mosseri（ig_verge_views_sends）：Sends per Reach 是 Instagram 最有價值的互動訊號（high_confidence）', sendFix);
+      'Mosseri：Sends per Reach 是 Instagram 最有價值的互動訊號（high_confidence）', sendFix);
   }
 
   if (fixes.length > 0) html += nextFixBox(fixes);
@@ -2034,7 +2331,7 @@ function diagnoseFB() {
     let intFix = intRate < 1 ? '重新設計結尾的 Discussion-Starter：具體情境問題比「你覺得呢」更有效。' : null;
     if (intRate < 1) fixes.push('設計 Discussion-Starter：「你遇過這種情況嗎？當時怎麼處理？」');
     html += metricCard('Interactions 互動率（/Viewers）', intRate, '%', intLevel, intVerdict,
-      '2026新指標：只計算主動意願行為，比舊 Engagement 更嚴格。Facebook Feed 重視 MSI（Meaningful Social Interactions）（meta_2026_reporting_changes）', intFix);
+      '2026新指標：只計算主動意願行為，比舊 Engagement 更嚴格。Facebook Feed 重視 MSI（Meaningful Social Interactions）', intFix);
   }
 
   if (comments && replies) {
@@ -2045,7 +2342,7 @@ function diagnoseFB() {
     let msiFix = msiRatio < 20 ? '主動回覆第一波留言，帶動二輪討論。讓觀眾感覺你真的在聽。' : null;
     if (msiRatio < 20) fixes.push('主動回覆前10則留言，用問題帶動二輪對話，這是 MSI 最快的提升方式');
     html += metricCard('MSI 品質（來回討論 / 留言數）', msiRatio, '%', msiLevel, msiVerdict,
-      'Facebook MSI（fb_msi_newsroom official）：back_and_forth_replies 是 Feed 演算法最重視的互動品質訊號', msiFix);
+      'Facebook MSI（official）：back_and_forth_replies 是 Feed 演算法最重視的互動品質訊號', msiFix);
   }
 
   if (fixes.length > 0) html += nextFixBox(fixes);
@@ -2057,9 +2354,18 @@ function diagnoseFB() {
 
 // ── NAVIGATION ──
 function nav(id) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.page').forEach(p => {
+    p.style.display = 'none';
+    p.classList.remove('active');
+  });
   document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById('page-' + id).classList.add('active');
+
+  const page = document.getElementById('page-' + id);
+  if (page) {
+    page.style.display = 'block';
+    page.classList.add('active');
+  }
+
   const nb = document.getElementById('nb-' + id);
   if (nb) nb.classList.add('active');
 }
@@ -2090,25 +2396,7 @@ function resetAudit() {
 
 // ── INIT ──
 updateScore();
-</script>
 
-<script>
-(function(){
-  function showSafetyPage(){
-    const safety=document.getElementById("safety");
-    if(!safety) return;
-    document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
-    safety.classList.add("active");
-    document.querySelectorAll(".nav-btn").forEach(b=>b.classList.remove("active"));
-    const nb=document.getElementById("nb-safety");
-    if(nb) nb.classList.add("active");
-  }
-  const oldNav=window.nav;
-  window.nav=function(id){ if(id==="safety") return showSafetyPage(); if(typeof oldNav==="function") return oldNav(id); };
-  function bind(){ const nb=document.getElementById("nb-safety"); if(nb) nb.addEventListener("click",e=>{e.preventDefault();showSafetyPage();}); if(location.hash==="#safety") showSafetyPage(); }
-  if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",bind); else bind();
-})();
 </script>
-
 </body>
 </html>
